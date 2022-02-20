@@ -16,7 +16,7 @@ const App = () => {
     if (sanctum) {
       const user = await axios.post('/api/login', {
         email: 'mizan@mail.com',
-        password: '12345678'
+        password: 'password'
       });
       console.log({ user });
     }
@@ -25,12 +25,16 @@ const App = () => {
     axios.post('/api/logout');
   };
   const getCurrentUser = async () => {
-    const user = await axios.post('/api/user');
+    const user = await axios.get('/api/user');
     console.log({ user });
+  };
+  const getRoles = async () => {
+    const roles = await axios.get('/api/roles');
+    console.log({ roles });
   };
 
   useEffect(() => {
-    // loginUser();
+    getRoles();
   }, []);
   return (
     <div>
