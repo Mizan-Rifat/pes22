@@ -10,10 +10,12 @@ use Spatie\Permission\Models\Permission;
 class PermissionController extends Controller {
 
 	public function index() {
+		$this->authorize('viewAny', Permission::class);
 		return Permission::all();
 	}
 
 	public function store(Request $request) {
+		$this->authorize('create', Permission::class);
 		$validatedData = $request->validate([
 			'name' => [
 				'required', 'string',
@@ -27,10 +29,12 @@ class PermissionController extends Controller {
 	}
 
 	public function show(Permission $permission) {
+		$this->authorize('view', Permission::class);
 		return $permission;
 	}
 
 	public function update(Request $request, Permission $permission) {
+		$this->authorize('update', Permission::class);
 		$validatedData = $request->validate([
 			'name' => [
 				'string', Rule::unique(Permission::class)->ignore($permission)
@@ -43,6 +47,7 @@ class PermissionController extends Controller {
 	}
 
 	public function destroy(Permission $permission) {
+		$this->authorize('delete', Permission::class);
 		return $permission->delete();
 	}
 }
