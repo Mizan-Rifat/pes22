@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import RolePermission from './role-permission/RolePermission';
 
 const Main = () => {
-  return <App />;
+  return <RolePermission />;
 };
 
 export default Main;

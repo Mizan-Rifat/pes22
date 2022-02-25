@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const path = require('path');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,5 +12,14 @@ const mix = require('laravel-mix');
  |
  */
 
+console.log(path.resolve(__dirname, 'resources/js/react/assets'));
+
 mix.disableNotifications();
 mix.js('resources/js/app.js', 'public/js').react();
+mix.webpackConfig({
+  resolve: {
+    alias: {
+      assets: path.resolve(__dirname, 'resources/js/react/assets')
+    }
+  }
+});
