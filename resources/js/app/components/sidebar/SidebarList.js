@@ -1,14 +1,29 @@
 import List from '@mui/material/List';
 import { alpha, styled } from '@mui/material/styles';
 
-const swda = hsdf => {
-  console.log({ hsdf });
-};
-
 const SidebarList = styled(List)(({ theme }) => ({
   width: '100%',
   maxWidth: 360,
   zIndex: 4,
+  '& .MuiListSubheader-root': {
+    backgroundColor: 'transparent',
+    color: alpha(theme.palette.common.white, 0.5),
+    // textTransform: 'uppercase',
+    fontWeight: 300,
+    fontSize: '0.75rem',
+    padding: 0
+  },
+  '& .MuiDivider-root': {
+    '& .MuiDivider-wrapper': {
+      paddingLeft: 0
+    },
+    '&:before': {
+      content: 'unset'
+    },
+    '&:after': {
+      borderColor: alpha(theme.palette.common.white, 0.3)
+    }
+  },
   '& .MuiListItemButton-root': {
     width: 'auto',
     transition: 'all 300ms linear',

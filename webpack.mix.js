@@ -21,6 +21,7 @@ mix.webpackConfig({
     alias: {
       app: path.resolve(__dirname, 'resources/js/app'),
       config: path.resolve(__dirname, 'resources/js/app/config'),
+      pages: path.resolve(__dirname, 'resources/js/app/pages'),
       components: path.resolve(__dirname, 'resources/js/app/components'),
       assets: path.resolve(__dirname, 'resources/js/app/assets/'),
       styles: path.resolve(__dirname, 'resources/js/app/assets/theme/styles')

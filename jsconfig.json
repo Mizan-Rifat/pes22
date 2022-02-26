@@ -4,6 +4,7 @@
     "baseUrl": "resources/js/app",
     "paths": {
       "app/*": ["./*"],
+      "pages/*": ["./pages/*"],
       "components/*": ["./components/*"],
       "config/*": ["./config/*"],
       "assets/*": ["./assets/*"],
