@@ -1,14 +1,8 @@
 import { Box } from '@mui/system';
 import React from 'react';
-import clsx from 'clsx';
 
 const PaperHeader = props => {
-  const { children, color, plain, title, subTitle, ...rest } = props;
-
-  //   const bgColor = clsx({
-  // 'linear-gradient(60deg, ' + warningColor[1] + ', ' + warningColor[2] + ')',
-  //     ...warningBoxShadow
-  //   })
+  const { children, color, title, subTitle, ...rest } = props;
 
   return (
     <Box
@@ -32,7 +26,7 @@ const PaperHeader = props => {
       {...rest}
     >
       {title && <h4>{title}</h4>}
-      {subTitle && <p>{subTitle}</p>}
+      {subTitle && <p style={{ color: 'rgba(255,255,255,.62)' }}>{subTitle}</p>}
       {children}
     </Box>
   );

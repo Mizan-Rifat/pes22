@@ -51,12 +51,18 @@ let theme = createTheme({
       warningColor[0],
       0.4
     )}`,
-    error: `0 4px 20px 0 ${alpha(blackColor, 0.14)}, 0 7px 10px -5px ${alpha(errorColor[0], 0.4)}`,
+    error: `0 4px 20px 0 ${alpha(blackColor, 0.14)}, 0 7px 10px -5px ${alpha(
+      errorColor[0],
+      0.4
+    )}`,
     success: `0 4px 20px 0 ${alpha(blackColor, 0.14)}, 0 7px 10px -5px ${alpha(
       successColor[0],
       0.4
     )}`,
-    info: `0 4px 20px 0 ${alpha(blackColor, 0.14)}, 0 7px 10px -5px ${alpha(infoColor[0], 0.4)}`
+    info: `0 4px 20px 0 ${alpha(blackColor, 0.14)}, 0 7px 10px -5px ${alpha(
+      infoColor[0],
+      0.4
+    )}`
   }
 });
 
@@ -85,9 +91,40 @@ theme = createTheme(theme, {
       styleOverrides: {
         body: {
           fontSize: theme.typography.fontSize,
-          '& h1,h2,h3,h4,h5.h6': {
+          '& h1,h2,h3,h4,h5,h6': {
             fontWeight: theme.typography.fontWeightLight
           }
+        },
+        h1: {
+          fontSize: '3em',
+          lineHeight: '1.15em'
+        },
+
+        h2: {
+          fontSize: '2.4em'
+        },
+
+        h3: {
+          fontSize: '1.825em',
+          lineHeight: '1.4em',
+          margin: '20px 0 10px'
+        },
+
+        h4: {
+          fontSize: '1.3em',
+          lineHeight: '1.4em'
+        },
+
+        h5: {
+          fontSize: '1.25em',
+          lineHeight: '1.4em',
+          marginBottom: '15px'
+        },
+
+        h6: {
+          fontSize: '1em',
+          textTransform: 'uppercase',
+          fontWeight: '500'
         }
       }
     },
@@ -120,7 +157,8 @@ theme = createTheme(theme, {
         {
           props: { variant: 'layout' },
           style: {
-            borderRadius: '0.375rem'
+            borderRadius: '0.375rem',
+            marginTop: 20
           }
         }
       ],
@@ -133,6 +171,17 @@ theme = createTheme(theme, {
           // '&:not(.MuiAppBar-root)': {
           //   borderRadius: '0.375rem'
           // }
+        }
+      }
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          color: 'inherit',
+          fontWeight: 300
+        },
+        body: {
+          fontSize: '0.75rem'
         }
       }
     }
