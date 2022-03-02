@@ -20,11 +20,11 @@ const Appbar = () => {
   return (
     <MuiAppBar
       position="fixed"
-      color="transparent"
       sx={{
         width: { sm: `calc(100% - ${drawerWidth}px)` },
         ml: { sm: `${drawerWidth}px` },
-        boxShadow: 0
+        boxShadow: 0,
+        bgcolor: theme => theme.palette.background.default
         // borderBottom: 1
       }}
     >

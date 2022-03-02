@@ -178,10 +178,60 @@ theme = createTheme(theme, {
       styleOverrides: {
         root: {
           color: 'inherit',
-          fontWeight: 300
+          fontWeight: 300,
+          whiteSpace: 'nowrap'
         },
         body: {
           fontSize: '0.75rem'
+        }
+      }
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: ({ ownerState, theme }) => ({
+          // '&:hover': {
+          //   '&:not(.Mui-disabled)': {
+          //     '&:before': {
+          //       borderColor: theme.palette.grey[400],
+          //       borderWidth: 1
+          //     }
+          //   }
+          // },
+          '&:hover': {
+            '&:not(.Mui-focused) .MuiOutlinedInput-notchedOutline': {
+              borderColor: theme.palette.grey[400],
+              borderWidth: 1
+            }
+          }
+        })
+      }
+    },
+    MuiInput: {
+      styleOverrides: {
+        root: ({ ownerState, theme }) => ({
+          // '&:hover': {
+          //   '&:not(.Mui-disabled)': {
+          //     '&:before': {
+          //       borderColor: theme.palette.grey[400],
+          //       borderWidth: 1
+          //     }
+          //   }
+          // },
+          '&:hover:not(.Mui-disabled):before,&:before': {
+            borderColor: theme.palette.grey[400],
+            borderWidth: 1
+          },
+          '&:after': {
+            borderColor: theme.palette[ownerState.color].main
+          }
+        })
+      }
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: theme.palette.grey[500],
+          fontWeight: 400
         }
       }
     }
