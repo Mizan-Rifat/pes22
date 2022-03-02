@@ -1,7 +1,15 @@
 {
   "compilerOptions": {
     "experimentalDecorators": true,
-    "baseUrl": "resources/js/react",
+    "baseUrl": "resources/js/app",
+    "paths": {
+      "app/*": ["./*"],
+      "pages/*": ["./pages/*"],
+      "components/*": ["./components/*"],
+      "config/*": ["./config/*"],
+      "assets/*": ["./assets/*"],
+      "styles/*": ["./assets/theme/styles/*"]
+    },
     "jsx": "react"
   },
   "exclude": ["node_modules"]

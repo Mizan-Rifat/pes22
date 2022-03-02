@@ -1,0 +1,5 @@
+/public
+/node_modules
+webpack.mix.js
+resources/js/app.js
+resources/js/bootstrap.js
