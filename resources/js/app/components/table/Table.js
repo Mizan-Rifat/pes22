@@ -68,8 +68,8 @@ const EnhancedTable = ({
   columns,
   data,
   perPage = 10,
-  updateMyData,
-  skipPageReset,
+  // updateMyData,
+  // skipPageReset,
   selection = true,
   search = true,
   title
@@ -88,8 +88,8 @@ const EnhancedTable = ({
     {
       columns,
       data,
-      autoResetPage: !skipPageReset,
-      updateMyData,
+      // autoResetPage: !skipPageReset,
+      // updateMyData,
       initialState: { pageSize: perPage ? perPage : data.length }
     },
     useGlobalFilter,

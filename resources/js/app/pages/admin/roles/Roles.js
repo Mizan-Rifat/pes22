@@ -7,12 +7,11 @@ import {
   InputAdornment,
   InputLabel,
   Paper,
-  Table,
   TextField
 } from '@mui/material';
 import PaperHeader from 'components/paper/PaperHeader';
 import React from 'react';
-import EnhancedTable from 'app/components/table/Table';
+import Table from 'app/components/table/Table';
 import { Search } from '@mui/icons-material';
 
 const Roles = () => {
@@ -86,7 +85,7 @@ const Roles = () => {
     []
   );
 
-  const [data, setData] = React.useState([
+  const [data] = React.useState([
     {
       firstName: 'afternoon',
       lastName: 'humor',
@@ -248,37 +247,13 @@ const Roles = () => {
       status: 'relationship'
     }
   ]);
-  const [skipPageReset, setSkipPageReset] = React.useState(false);
 
-  const updateMyData = (rowIndex, columnId, value) => {
-    // We also turn on the flag to not reset the page
-    setSkipPageReset(true);
-    setData(old =>
-      old.map((row, index) => {
-        if (index === rowIndex) {
-          return {
-            ...old[rowIndex],
-            [columnId]: value
-          };
-        }
-        return row;
-      })
-    );
-  };
   return (
     <Paper variant="layout" sx={{ width: '100%', bgcolor: 'transparent' }}>
       <PaperHeader title="Roles" subTitle="Choose user roles" color="primary" />
 
       <Box sx={{ px: 2 }}>
-        {/* <TableExample /> */}
-        <EnhancedTable
-          title="Roles"
-          columns={columns}
-          data={data}
-          setData={setData}
-          updateMyData={updateMyData}
-          skipPageReset={skipPageReset}
-        />
+        <Table title="Roles" columns={columns} data={data} />
       </Box>
     </Paper>
   );

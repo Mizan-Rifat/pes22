@@ -9,23 +9,23 @@ export const infoColor = ['#00acc1', '#26c6da', '#00acc1', '#00d3ee'];
 export const blackColor = '#000';
 export const whiteColor = '#fff';
 
-export const primaryBoxShadow = `0 4px 20px 0 ${alpha(blackColor, 0.14)}, 0 7px 10px -5px ${alpha(
-  primaryColor[0],
-  0.4
-)}`;
-export const warningBoxShadow = `0 4px 20px 0 ${alpha(blackColor, 0.14)}, 0 7px 10px -5px ${alpha(
-  warningColor[0],
-  0.4
-)}`;
-export const errorBoxShadow = `0 4px 20px 0 ${alpha(blackColor, 0.14)}, 0 7px 10px -5px ${alpha(
-  errorColor[0],
-  0.4
-)}`;
-export const successBoxShadow = `0 4px 20px 0 ${alpha(blackColor, 0.14)}, 0 7px 10px -5px ${alpha(
-  successColor[0],
-  0.4
-)}`;
-export const infoBoxShadow = `0 4px 20px 0 ${alpha(blackColor, 0.14)}, 0 7px 10px -5px ${alpha(
-  infoColor[0],
-  0.4
-)}`;
+export const primaryBoxShadow = `0 4px 20px 0 ${alpha(
+  blackColor,
+  0.14
+)}, 0 7px 10px -5px ${alpha(primaryColor[0], 0.4)}`;
+export const warningBoxShadow = `0 4px 20px 0 ${alpha(
+  blackColor,
+  0.14
+)}, 0 7px 10px -5px ${alpha(warningColor[0], 0.4)}`;
+export const errorBoxShadow = `0 4px 20px 0 ${alpha(
+  blackColor,
+  0.14
+)}, 0 7px 10px -5px ${alpha(errorColor[0], 0.4)}`;
+export const successBoxShadow = `0 4px 20px 0 ${alpha(
+  blackColor,
+  0.14
+)}, 0 7px 10px -5px ${alpha(successColor[0], 0.4)}`;
+export const infoBoxShadow = `0 4px 20px 0 ${alpha(
+  blackColor,
+  0.14
+)}, 0 7px 10px -5px ${alpha(infoColor[0], 0.4)}`;
