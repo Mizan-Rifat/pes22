@@ -3,46 +3,26 @@ import { alpha } from '@mui/material/styles';
 import {
   Button,
   FormControl,
-  IconButton,
   MenuItem,
   Select,
   Toolbar,
-  Tooltip,
   Typography
 } from '@mui/material';
-import { FilterList } from '@mui/icons-material';
 import TableSearchBox from './TableSearchBox';
 
 const TableToolbar = ({
-  selectedRowIds,
+  selectedRowIds: selectedIds,
   title,
   search,
   globalFilter,
-  setGlobalFilter
+  setGlobalFilter,
+  bulkActions
 }) => {
-  console.log({ selectedRowIds });
-
-  const actions = [
-    {
-      title: 'Delete',
-      handler: () => {
-        console.log('delete');
-      }
-    },
-    {
-      title: 'Update',
-      handler: () => {
-        console.log('Update');
-      }
-    }
-  ];
-
   const [action, setAction] = useState('');
 
-  const handleApply = () => {
-    actions.find(item => item.title === action).handler();
-  };
-  const numSelected = Object.keys(selectedRowIds).length;
+  const numSelected = Object.keys(selectedIds).length;
+  const selectedRowIds = Object.keys(selectedIds);
+
   return (
     <Toolbar
       sx={{
@@ -94,18 +74,22 @@ const TableToolbar = ({
               value={action}
               onChange={e => setAction(e.target.value)}
             >
-              <MenuItem value="">
+              <MenuItem value="" disabled>
                 <em>Action</em>
               </MenuItem>
-              {actions.map(action => (
-                <MenuItem key={action.title} value={action.title}>
-                  {action.title}
+              {Object.keys(bulkActions).map(action => (
+                <MenuItem key={action} value={action}>
+                  {bulkActions[action].title}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
 
-          <Button variant="outlined" size="small" onClick={handleApply}>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => bulkActions[action]?.handler(selectedRowIds)}
+          >
             Apply
           </Button>
         </>
