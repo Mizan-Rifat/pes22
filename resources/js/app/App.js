@@ -9,6 +9,9 @@ import Home from './layouts/main/Home';
 import Test from './layouts/main/Test';
 import Roles from 'pages/admin/roles/Roles';
 import Permissions from 'pages/admin/permissions/Permissions';
+import Role from 'pages/admin/roles/Role';
+import { ToastContainer, Slide } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   console.log({ theme });
@@ -24,13 +27,25 @@ const App = () => {
               <Route path="/test" element={<Test />} />
             </Route>
 
-            <Route path="/admin" element={<AdminLayout />}>
+            <Route path="admin" element={<AdminLayout />}>
               <Route path="roles" element={<Roles />} />
+              <Route path="roles/:role" element={<Role />} />
               <Route path="permissions" element={<Permissions />} />
             </Route>
           </Routes>
         </BrowserRouter>
-        {/* <AdminLayout /> */}
+
+        <ToastContainer
+          transition={Slide}
+          position="top-right"
+          autoClose={4000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          draggable
+          pauseOnHover
+        />
       </ThemeProvider>
     </>
   );

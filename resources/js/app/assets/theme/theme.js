@@ -69,7 +69,8 @@ let theme = createTheme({
 theme = createTheme(theme, {
   palette: {
     background: {
-      default: theme.palette.grey[200]
+      default: theme.palette.grey[200],
+      paper: theme.palette.grey[200]
     }
   },
   typography: {
@@ -158,7 +159,8 @@ theme = createTheme(theme, {
           props: { variant: 'layout' },
           style: {
             borderRadius: '0.375rem',
-            marginTop: 20
+            marginTop: 20,
+            padding: '24px'
           }
         }
       ],
@@ -232,6 +234,16 @@ theme = createTheme(theme, {
         root: {
           color: theme.palette.grey[500],
           fontWeight: 400
+        }
+      }
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          borderRadius: '.375rem',
+          '& .MuiDialogTitle-root': {
+            fontWeight: 300
+          }
         }
       }
     }

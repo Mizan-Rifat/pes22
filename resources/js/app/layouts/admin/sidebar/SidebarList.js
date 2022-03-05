@@ -1,7 +1,7 @@
 import React from 'react';
 import List from 'app/components/sidebar/SidebarList';
 import { Divider, ListSubheader } from '@mui/material';
-import routes from 'app/routes/routes';
+import routes from 'app/routes/routesList';
 import SidebarListItem from './SidebarListItem';
 
 const SidebarList = () => {

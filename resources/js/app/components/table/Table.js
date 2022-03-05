@@ -88,7 +88,6 @@ const EnhancedTable = ({
       }
     }
   );
-  console.log({ page: headerGroups[0].headers });
   return (
     <TableContainer
       sx={{ px: 2, position: 'relative', opacity: loading ? 0.5 : 1 }}
@@ -120,7 +119,7 @@ const EnhancedTable = ({
               {headerGroup.headers.map(column => {
                 return (
                   <TableCell
-                    padding={column.id === 'selection' ? 'checkbox' : 'default'}
+                    padding={column.id === 'selection' ? 'checkbox' : 'normal'}
                     sortDirection={false}
                     {...(column.id === 'selection'
                       ? column.getHeaderProps()
@@ -155,7 +154,9 @@ const EnhancedTable = ({
                 {row.cells.map(cell => {
                   return (
                     <TableCell
-                      padding={cell.column.id === 'selection' && 'checkbox'}
+                      padding={
+                        cell.column.id === 'selection' ? 'checkbox' : 'normal'
+                      }
                       {...cell.getCellProps(cell.column.cellProps)}
                     >
                       {cell.render('Cell')}
@@ -173,7 +174,7 @@ const EnhancedTable = ({
             <>
               {Array.from(Array(minRow - page.length).keys()).map(
                 (item, index) => (
-                  <TableRow>
+                  <TableRow key={index}>
                     <TableCell
                       sx={{ borderBottom: 'none' }}
                       colSpan={columns.length + 2}

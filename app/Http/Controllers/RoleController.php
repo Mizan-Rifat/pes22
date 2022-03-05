@@ -10,7 +10,7 @@ use Spatie\Permission\Models\Role;
 class RoleController extends Controller {
 
 	public function index() {
-		$this->authorize('viewAny', Role::class);
+		// $this->authorize('viewAny', Role::class);
 		return Role::all();
 	}
 
@@ -29,12 +29,12 @@ class RoleController extends Controller {
 	}
 
 	public function show(Role $role) {
-		$this->authorize('view', Role::class);
+		// $this->authorize('view', Role::class);
 		return $role;
 	}
 
 	public function update(Request $request, Role $role) {
-		$this->authorize('update', Role::class);
+		// $this->authorize('update', Role::class);
 		$validatedData = $request->validate([
 			'name' => [
 				'string', Rule::unique(Role::class)->ignore($role)
