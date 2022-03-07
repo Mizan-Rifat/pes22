@@ -176,6 +176,13 @@ theme = createTheme(theme, {
         }
       }
     },
+    MuiTableContainer: {
+      styleOverrides: {
+        root: {
+          padding: 0
+        }
+      }
+    },
     MuiTableCell: {
       styleOverrides: {
         root: {

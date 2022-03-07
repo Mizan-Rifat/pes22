@@ -24,26 +24,69 @@ export const fetchRole = createAsyncThunk('roles/fetch_role', async roleId => {
   return role;
 });
 
+export const addRole = createAsyncThunk(
+  'roles/add_role',
+  async ({ formData, setError }, { rejectWithValue }) => {
+    try {
+      const role = await axios.post(
+        `${process.env.MIX_DOMAIN}/api/roles`,
+        formData
+      );
+      toast.success('Successfully created.');
+      return role;
+    } catch (error) {
+      toast.error(error.response.data.message);
+      if (error.response.status === 422) {
+        const errors = error.response.data.errors;
+        Object.keys(errors).forEach(error => {
+          setError(error, {
+            type: 'manual',
+            message: errors[error]
+          });
+        });
+      }
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const updateRole = createAsyncThunk(
   'roles/update_role',
   async ({ roleId, formData, setError }, { rejectWithValue }) => {
-    const role = await axios
-      .put(`${process.env.MIX_DOMAIN}/api/roles/${roleId}`, formData)
-      .catch(err => {
-        console.log({ err });
-        if (err.response.status === 422) {
-          const errors = err.response.data.errors;
-          Object.keys(errors).forEach(error => {
-            setError(error, {
-              type: 'manual',
-              message: errors[error]
-            });
+    try {
+      const role = await axios.put(
+        `${process.env.MIX_DOMAIN}/api/roles/${roleId}`,
+        formData
+      );
+      toast.success('Successfully updated.');
+      return role;
+    } catch (error) {
+      toast.error(error.response.data.message);
+      if (error.response.status === 422) {
+        const errors = error.response.data.errors;
+        Object.keys(errors).forEach(error => {
+          setError(error, {
+            type: 'manual',
+            message: errors[error]
           });
-        }
-        toast.error(err.response.data.message);
-        return rejectWithValue(err);
-      });
-    return role;
+        });
+      }
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteRole = createAsyncThunk(
+  'roles/delete_role',
+  async (roleId, { rejectWithValue }) => {
+    try {
+      await axios.delete(`${process.env.MIX_DOMAIN}/api/roles/${roleId}`);
+      toast.success('Successfully deleted.');
+      return roleId;
+    } catch (error) {
+      toast.error(error.response.data.message);
+      return rejectWithValue(error);
+    }
   }
 );
 
@@ -52,7 +95,8 @@ export const counterSlice = createSlice({
   initialState: {
     roles: [],
     role: {},
-    fetching: false,
+    openDialog: false,
+    fetching: true,
     loading: false
   },
   reducers: {
@@ -60,6 +104,12 @@ export const counterSlice = createSlice({
       state.roles = action.payload.roles;
       state.fetching = false;
       state.loading = false;
+    },
+    showDialog: state => {
+      state.openDialog = true;
+    },
+    closeDialog: state => {
+      state.openDialog = false;
     }
   },
   extraReducers: builder => {
@@ -77,12 +127,33 @@ export const counterSlice = createSlice({
         state.loading = true;
       })
       .addCase(updateRole.fulfilled, (state, action) => {
-        console.log('success');
         state.role = action.payload.data;
+        state.openDialog = false;
         state.loading = false;
-        toast.success('Successfully updated.');
       })
       .addCase(updateRole.rejected, state => {
+        state.loading = false;
+      })
+      .addCase(addRole.pending, state => {
+        state.loading = true;
+      })
+      .addCase(addRole.fulfilled, (state, action) => {
+        state.roles.push(action.payload.data);
+        state.openDialog = false;
+        state.loading = false;
+      })
+      .addCase(addRole.rejected, state => {
+        state.loading = false;
+      })
+      .addCase(deleteRole.pending, state => {
+        state.loading = true;
+      })
+      .addCase(deleteRole.fulfilled, (state, { payload }) => {
+        console.log({ payload });
+        state.roles = state.roles.filter(role => role.id !== payload);
+        state.loading = false;
+      })
+      .addCase(deleteRole.rejected, state => {
         state.loading = false;
       })
       .addCase(fetchRole.pending, state => {
@@ -90,11 +161,12 @@ export const counterSlice = createSlice({
       })
       .addCase(fetchRole.fulfilled, (state, action) => {
         state.role = action.payload.data;
+        state.fetching = false;
         state.loading = false;
       });
   }
 });
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export const { showDialog, closeDialog } = counterSlice.actions;
 
 export default counterSlice.reducer;

@@ -21,6 +21,7 @@ module.exports = {
   rules: {
     'react/jsx-key': 'off',
     'react/display-name': 'off',
-    'react/prop-types': 'off'
+    'react/prop-types': 'off',
+    'prettier/prettier': ['error', { endOfLine: 'auto' }]
   }
 };

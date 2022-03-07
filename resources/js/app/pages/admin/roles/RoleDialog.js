@@ -1,14 +1,7 @@
-import { Button, Grid, Paper, Stack, TextField } from '@mui/material';
-import DetailsGrid from 'app/components/common/DetailsGrid';
-import PaperHeader from 'app/components/paper/PaperHeader';
-import Table from 'app/components/table/Table';
-import { fetchRole } from 'app/redux/slices/rolesSlice';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
+import { Button } from '@mui/material';
+import { closeDialog } from 'app/redux/slices/rolesSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -21,23 +14,27 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const RoleDialog = ({ open, setOpen, title, type, loading }) => {
+const RoleDialog = ({ title, type }) => {
+  const { openDialog, loading, fetching } = useSelector(state => state.roles);
+  const dispatch = useDispatch();
+
   return (
     <Dialog
-      open={open}
+      open={openDialog}
       TransitionComponent={Transition}
       keepMounted
-      onClose={() => setOpen(false)}
+      onClose={() => dispatch(closeDialog())}
       aria-describedby="alert-dialog-slide-description"
       maxWidth="md"
+      sx={{ '& .MuiDialog-paper': { minWidth: 400 } }}
     >
-      <BackdropContainer loading={loading}>
+      <BackdropContainer loading={loading || fetching}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-          <RoleForm type={type} formId="roleForm" />
+          {openDialog && <RoleForm type={type} formId="roleForm" />}
         </DialogContent>
         <DialogActions>
-          <Button size="small" onClick={() => setOpen(false)}>
+          <Button size="small" onClick={() => dispatch(closeDialog())}>
             Cancel
           </Button>
           <Button size="small" type="submit" form="roleForm">

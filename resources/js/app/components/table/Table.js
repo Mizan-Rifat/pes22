@@ -89,9 +89,7 @@ const EnhancedTable = ({
     }
   );
   return (
-    <TableContainer
-      sx={{ px: 2, position: 'relative', opacity: loading ? 0.5 : 1 }}
-    >
+    <TableContainer sx={{ position: 'relative', opacity: loading ? 0.5 : 1 }}>
       <Backdrop
         sx={{
           color: '#fff',

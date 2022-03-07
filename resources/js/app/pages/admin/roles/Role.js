@@ -1,29 +1,27 @@
-import { Button, Paper, Stack } from '@mui/material';
+import { Button, Paper } from '@mui/material';
 import DetailsGrid from 'app/components/common/DetailsGrid';
 import PaperHeader from 'app/components/paper/PaperHeader';
-import { fetchRole } from 'app/redux/slices/rolesSlice';
+import { deleteRole, fetchRole, showDialog } from 'app/redux/slices/rolesSlice';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import AddIcon from '@mui/icons-material/Add';
+import { useNavigate, useParams } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import RoleDialog from './RoleDialog';
-import { toast } from 'react-toastify';
+import ActionToolbar from 'app/components/common/ActionToolbar';
 
 const Role = () => {
   const { role: roleId } = useParams();
 
-  const [openDialog, setOpenDialog] = useState(false);
-  const [dialogType, setDialogType] = useState('add');
-
-  const { role, loading, fetching } = useSelector(state => state.roles);
+  const { role } = useSelector(state => state.roles);
 
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
 
-  const handleActionClick = type => {
-    setOpenDialog(true);
-    setDialogType(type);
+  const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    await dispatch(deleteRole(role.id)).unwrap();
+    navigate(`/admin/roles`);
   };
 
   useEffect(() => {
@@ -53,42 +51,29 @@ const Role = () => {
     <>
       <Paper variant="layout" sx={{ width: '100%', bgcolor: 'transparent' }}>
         <PaperHeader title="Role" color="primary" />
-        <Stack
-          direction="row"
-          justifyContent="flex-end"
-          alignItems="center"
-          spacing={2}
-          sx={{ my: 3 }}
-        >
-          <Button
-            variant="outlined"
-            startIcon={<AddIcon />}
-            size="small"
-            onClick={() => handleActionClick('add')}
-          >
-            Add
-          </Button>
+        <ActionToolbar justifyContent="flex-start">
           <Button
             variant="outlined"
             startIcon={<EditIcon />}
             size="small"
-            onClick={() => handleActionClick('update')}
+            onClick={() => dispatch(showDialog())}
           >
             Edit
           </Button>
-        </Stack>
+          <Button
+            variant="outlined"
+            color="error"
+            startIcon={<EditIcon />}
+            size="small"
+            onClick={handleDelete}
+          >
+            Delete
+          </Button>
+        </ActionToolbar>
         <DetailsGrid data={data} fullColumn />
       </Paper>
 
-      {openDialog && (
-        <RoleDialog
-          title={dialogType === 'add' ? 'Add a new role' : 'Update role'}
-          type={dialogType}
-          open={openDialog}
-          setOpen={setOpenDialog}
-          loading={loading || fetching}
-        />
-      )}
+      <RoleDialog title="Update role" type="update" />
     </>
   );
 };

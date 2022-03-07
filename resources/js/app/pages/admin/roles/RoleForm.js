@@ -1,11 +1,11 @@
 import { TextField } from '@mui/material';
-import { updateRole } from 'app/redux/slices/rolesSlice';
-import React, { forwardRef } from 'react';
+import { addRole, updateRole } from 'app/redux/slices/rolesSlice';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
 const RoleForm = ({ formId, type }) => {
-  const { role, pending } = useSelector(state => state.roles);
+  const { role } = useSelector(state => state.roles);
   const dispatch = useDispatch();
   const {
     register,
@@ -14,16 +14,11 @@ const RoleForm = ({ formId, type }) => {
     formState: { errors }
   } = useForm();
 
-  const createRole = () => {
-    useDispatch;
-    console.log('createing');
-  };
-
   const onSubmit = async data => {
     if (type === 'add') {
-      createRole();
+      await dispatch(addRole({ formData: data, setError }));
     } else {
-      dispatch(updateRole({ roleId: role.id, formData: data, setError }));
+      await dispatch(updateRole({ roleId: role.id, formData: data, setError }));
     }
   };
 
@@ -33,7 +28,7 @@ const RoleForm = ({ formId, type }) => {
         fullWidth
         label="Name"
         variant="standard"
-        defaultValue={type !== 'add' ? role.name : ''}
+        defaultValue={type !== 'add' ? role.name : undefined}
         error={!!errors.name}
         helperText={errors.name?.message}
         sx={{ mt: 1 }}
@@ -43,7 +38,7 @@ const RoleForm = ({ formId, type }) => {
         fullWidth
         label="Guard Name"
         variant="standard"
-        defaultValue={type !== 'add' ? role.guard_name : ''}
+        defaultValue={type !== 'add' ? role.guard_name : undefined}
         error={!!errors.guard_name}
         helperText={errors.guard_name?.message}
         sx={{ mt: 1 }}

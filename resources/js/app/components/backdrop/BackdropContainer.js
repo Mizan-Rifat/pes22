@@ -3,7 +3,7 @@ import React from 'react';
 
 const BackdropContainer = ({ children, loading }) => {
   return (
-    <Box sx={{ px: 2, position: 'relative', opacity: loading ? 0.5 : 1 }}>
+    <Box sx={{ position: 'relative', opacity: loading ? 0.5 : 1 }}>
       {children}
       <Backdrop
         sx={{
