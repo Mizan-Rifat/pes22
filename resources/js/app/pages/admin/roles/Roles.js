@@ -12,11 +12,13 @@ import { useNavigate } from 'react-router-dom';
 import ActionToolbar from 'app/components/common/ActionToolbar';
 import { Add } from '@mui/icons-material';
 import RoleDialog from './RoleDialog';
+import { useConfirmation } from 'app/providers/ConfirmationProvider';
 
 const Roles = () => {
   const { roles, fetching, loading } = useSelector(state => state.roles);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const confirm = useConfirmation();
 
   const rowActions = [
     {
@@ -27,9 +29,12 @@ const Roles = () => {
     },
     {
       title: 'Delete',
-      handler: id => {
+      handler: async id => {
         console.log('Delete', id);
-        dispatch(deleteRole(id));
+        await confirm({
+          variant: 'error'
+        });
+        await dispatch(deleteRole(id)).unwrap();
       }
     }
   ];

@@ -8,11 +8,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import RoleDialog from './RoleDialog';
 import ActionToolbar from 'app/components/common/ActionToolbar';
+import { useConfirmation } from 'app/providers/ConfirmationProvider';
 
 const Role = () => {
   const { role: roleId } = useParams();
 
   const { role } = useSelector(state => state.roles);
+  const confirm = useConfirmation();
 
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
@@ -20,6 +22,9 @@ const Role = () => {
   const navigate = useNavigate();
 
   const handleDelete = async () => {
+    await confirm({
+      variant: 'error'
+    });
     await dispatch(deleteRole(role.id)).unwrap();
     navigate(`/admin/roles`);
   };

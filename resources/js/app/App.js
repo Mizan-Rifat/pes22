@@ -12,40 +12,43 @@ import Permissions from 'pages/admin/permissions/Permissions';
 import Role from 'pages/admin/roles/Role';
 import { ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ConfirmationProvider from './providers/ConfirmationProvider';
 
 const App = () => {
   console.log({ theme });
   return (
     <>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
+        <ConfirmationProvider>
+          <CssBaseline />
 
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<MainLayout />}>
-              <Route index element={<Home />} />
-              <Route path="/test" element={<Test />} />
-            </Route>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<MainLayout />}>
+                <Route index element={<Home />} />
+                <Route path="/test" element={<Test />} />
+              </Route>
 
-            <Route path="admin" element={<AdminLayout />}>
-              <Route path="roles" element={<Roles />} />
-              <Route path="roles/:role" element={<Role />} />
-              <Route path="permissions" element={<Permissions />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
+              <Route path="admin" element={<AdminLayout />}>
+                <Route path="roles" element={<Roles />} />
+                <Route path="roles/:role" element={<Role />} />
+                <Route path="permissions" element={<Permissions />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
 
-        <ToastContainer
-          transition={Slide}
-          position="top-right"
-          autoClose={4000}
-          hideProgressBar
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          draggable
-          pauseOnHover
-        />
+          <ToastContainer
+            transition={Slide}
+            position="top-right"
+            autoClose={4000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            draggable
+            pauseOnHover
+          />
+        </ConfirmationProvider>
       </ThemeProvider>
     </>
   );
