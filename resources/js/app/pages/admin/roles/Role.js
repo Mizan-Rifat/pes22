@@ -9,6 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import RoleDialog from './RoleDialog';
 import ActionToolbar from 'app/components/common/ActionToolbar';
 import { useConfirmation } from 'app/providers/ConfirmationProvider';
+import BackToLIstButton from 'app/components/common/BackToLIstButton';
 
 const Role = () => {
   const { role: roleId } = useParams();
@@ -54,6 +55,8 @@ const Role = () => {
 
   return (
     <>
+      <BackToLIstButton onClick={() => navigate('/admin/roles')} />
+
       <Paper variant="layout" sx={{ width: '100%', bgcolor: 'transparent' }}>
         <PaperHeader title="Role" color="primary" />
         <ActionToolbar justifyContent="flex-start">
