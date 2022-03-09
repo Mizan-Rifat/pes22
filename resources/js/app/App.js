@@ -13,6 +13,7 @@ import Role from 'pages/admin/roles/Role';
 import { ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ConfirmationProvider from './providers/ConfirmationProvider';
+import Permission from './pages/admin/permissions/Permission';
 
 const App = () => {
   console.log({ theme });
@@ -33,6 +34,10 @@ const App = () => {
                 <Route path="roles" element={<Roles />} />
                 <Route path="roles/:role" element={<Role />} />
                 <Route path="permissions" element={<Permissions />} />
+                <Route
+                  path="permissions/:permission"
+                  element={<Permission />}
+                />
               </Route>
             </Routes>
           </BrowserRouter>
