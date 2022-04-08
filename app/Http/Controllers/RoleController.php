@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RoleResource;
+use App\Http\Resources\UserCollection;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,11 +13,12 @@ class RoleController extends Controller {
 
 	public function index() {
 		// $this->authorize('viewAny', Role::class);
-		return Role::all();
+		// return Role::all();
+		return RoleResource::collection(Role::all());
 	}
 
 	public function store(Request $request) {
-		$this->authorize('create', Role::class);
+		// $this->authorize('create', Role::class);
 		$validatedData = $request->validate([
 			'name' => [
 				'required', 'string',
@@ -30,7 +33,8 @@ class RoleController extends Controller {
 
 	public function show(Role $role) {
 		// $this->authorize('view', Role::class);
-		return $role;
+		// return $role->permissions;
+		return new RoleResource($role);
 	}
 
 	public function update(Request $request, Role $role) {
@@ -47,7 +51,7 @@ class RoleController extends Controller {
 	}
 
 	public function destroy(Role $role) {
-		$this->authorize('delete', Role::class);
+		// $this->authorize('delete', Role::class);
 		return $role->delete();
 	}
 }

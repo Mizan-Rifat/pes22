@@ -1,20 +1,22 @@
 import { Button, Paper } from '@mui/material';
 import DetailsGrid from 'app/components/common/DetailsGrid';
 import PaperHeader from 'app/components/paper/PaperHeader';
-import { deleteRole, fetchRole, showDialog } from 'app/redux/slices/rolesSlice';
+import { deleteRole, fetchRole } from 'app/redux/slices/rolesSlice';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
-import RoleDialog from './RoleDialog';
 import ActionToolbar from 'app/components/common/ActionToolbar';
 import { useConfirmation } from 'app/providers/ConfirmationProvider';
 import BackToLIstButton from 'app/components/common/BackToLIstButton';
+import BackdropContainer from 'app/components/backdrop/BackdropContainer';
+import UserRolePermission from '../users/UserRolePermission';
+import RolePermission from './RolePermission';
 
 const Role = () => {
   const { role: roleId } = useParams();
 
-  const { role } = useSelector(state => state.roles);
+  const { role, fetching, loading } = useSelector(state => state.roles);
   const confirm = useConfirmation();
 
   const dispatch = useDispatch();
@@ -47,6 +49,22 @@ const Role = () => {
       {
         label: 'Guard Name',
         value: role.guard_name
+      },
+      {
+        label: 'Permissions',
+        render: (
+          <ul style={{ padding: 0, margin: 0 }}>
+            {role.permissions?.map(permission => (
+              <li
+                style={{
+                  listStylePosition: 'inside'
+                }}
+              >
+                {permission.name}
+              </li>
+            ))}
+          </ul>
+        )
       }
     ];
 
@@ -59,29 +77,31 @@ const Role = () => {
 
       <Paper variant="layout" sx={{ width: '100%', bgcolor: 'transparent' }}>
         <PaperHeader title="Role" color="primary" />
-        <ActionToolbar justifyContent="flex-start">
-          <Button
-            variant="outlined"
-            startIcon={<EditIcon />}
-            size="small"
-            onClick={() => dispatch(showDialog())}
-          >
-            Edit
-          </Button>
-          <Button
-            variant="outlined"
-            color="error"
-            startIcon={<EditIcon />}
-            size="small"
-            onClick={handleDelete}
-          >
-            Delete
-          </Button>
-        </ActionToolbar>
-        <DetailsGrid data={data} fullColumn />
-      </Paper>
 
-      <RoleDialog title="Update role" type="update" />
+        <BackdropContainer loading={fetching}>
+          <ActionToolbar justifyContent="flex-start">
+            <Button
+              variant="outlined"
+              startIcon={<EditIcon />}
+              size="small"
+              component={Link}
+              to="edit"
+            >
+              Edit
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              startIcon={<EditIcon />}
+              size="small"
+              onClick={handleDelete}
+            >
+              Delete
+            </Button>
+          </ActionToolbar>
+          <DetailsGrid data={data} fullColumn />
+        </BackdropContainer>
+      </Paper>
     </>
   );
 };

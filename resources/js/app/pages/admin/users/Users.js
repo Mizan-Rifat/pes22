@@ -3,14 +3,20 @@ import PaperHeader from 'components/paper/PaperHeader';
 import React, { useEffect } from 'react';
 import Table from 'app/components/table/Table';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteRole, fetchRoles } from 'app/redux/slices/rolesSlice';
-import { Link, useNavigate } from 'react-router-dom';
+import {
+  deleteUser,
+  fetchUsers,
+  showDialog
+} from 'app/redux/slices/usersSlice';
+import { useNavigate } from 'react-router-dom';
 import ActionToolbar from 'app/components/common/ActionToolbar';
 import { Add } from '@mui/icons-material';
+import UserDialog from './UserDialog';
 import { useConfirmation } from 'app/providers/ConfirmationProvider';
+import axios from 'axios';
 
-const Roles = () => {
-  const { roles, fetching, loading } = useSelector(state => state.roles);
+const Users = () => {
+  const { users, fetching, loading } = useSelector(state => state.users);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const confirm = useConfirmation();
@@ -29,7 +35,7 @@ const Roles = () => {
         await confirm({
           variant: 'error'
         });
-        await dispatch(deleteRole(id)).unwrap();
+        await dispatch(deleteUser(id)).unwrap();
       }
     }
   ];
@@ -50,67 +56,55 @@ const Roles = () => {
         accessor: 'id'
       },
       {
-        Header: 'Role',
+        Header: 'User',
         accessor: 'name'
       },
       {
-        Header: 'Guard',
-        accessor: 'guard_name'
-      },
-      {
-        Header: 'Permissions',
-        cellProps: {
-          sx: {
-            whiteSpace: 'normal'
-          }
-        },
-        Cell: rowData => {
-          const { permissions } = rowData.row.original;
-          console.log({ rowData });
-          return permissions.map(permission => permission.name).join(', ');
-        }
+        Header: 'Email',
+        accessor: 'email'
       }
     ],
     []
   );
 
-  useEffect(() => {
-    dispatch(fetchRoles());
+  useEffect(async () => {
+    // const user = await axios.post('/api/login', {
+    //   email: 'mizan@mail.com',
+    //   password: 'password'
+    // });
+
+    // console.log({ user });
+    dispatch(fetchUsers());
   }, []);
 
   return (
     <>
       <Paper variant="layout" sx={{ width: '100%', bgcolor: 'transparent' }}>
-        <PaperHeader
-          title="Roles"
-          subTitle="Choose user roles"
-          color="primary"
-        />
+        <PaperHeader title="Users" color="primary" />
 
         <ActionToolbar>
           <Button
             variant="outlined"
             startIcon={<Add />}
             size="small"
-            component={Link}
-            to="create"
+            onClick={() => dispatch(showDialog())}
           >
             New
           </Button>
         </ActionToolbar>
 
         <Table
-          title="Roles"
+          title="Users"
           columns={columns}
-          data={roles}
+          data={users}
           loading={fetching || loading}
-          // minRow={10}
           rowActions={rowActions}
           bulkActions={bulkActions}
         />
       </Paper>
+      <UserDialog title="Add a new user" type="add" />
     </>
   );
 };
 
-export default Roles;
+export default Users;

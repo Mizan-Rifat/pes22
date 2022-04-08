@@ -5,6 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import ReportIcon from '@mui/icons-material/Report';
+import HelpIcon from '@mui/icons-material/Help';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Zoom direction="up" ref={ref} {...props} />;
@@ -27,7 +28,8 @@ const ConfirmationDialog = ({
         {title}
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', alignItems: 'center', mt: 2.5 }}>
-        <ReportIcon color={variant} />
+        {variant === 'error' && <ReportIcon color={variant} />}
+        {variant === 'warning' && <HelpIcon color={variant} />}
         <DialogContentText sx={{ ml: 0.5 }}>{description}</DialogContentText>
       </DialogContent>
       <DialogActions>

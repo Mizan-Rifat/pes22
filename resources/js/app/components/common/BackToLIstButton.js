@@ -2,7 +2,7 @@ import ArrowBack from '@mui/icons-material/ArrowBack';
 import { Button } from '@mui/material';
 import React from 'react';
 
-const BackToLIstButton = ({ onClick }) => {
+const BackToLIstButton = ({ onClick, label = 'Go Back' }) => {
   return (
     <Button
       variant="outlined"
@@ -12,7 +12,7 @@ const BackToLIstButton = ({ onClick }) => {
       sx={{ mb: 6 }}
       onClick={onClick}
     >
-      Back to list
+      {label}
     </Button>
   );
 };

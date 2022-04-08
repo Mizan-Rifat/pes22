@@ -28,3 +28,4 @@ mix.webpackConfig({
     }
   }
 });
+mix.browserSync('localhost:8000');

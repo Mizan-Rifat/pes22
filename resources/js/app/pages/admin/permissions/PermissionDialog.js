@@ -22,13 +22,10 @@ const PermissionDialog = ({ title, type }) => {
 
   return (
     <Dialog
+      variant="edit"
       open={openDialog}
       TransitionComponent={Transition}
-      keepMounted
       onClose={() => dispatch(closeDialog())}
-      aria-describedby="alert-dialog-slide-description"
-      maxWidth="md"
-      sx={{ '& .MuiDialog-paper': { minWidth: 400 } }}
     >
       <BackdropContainer loading={loading || fetching}>
         <DialogTitle>{title}</DialogTitle>
