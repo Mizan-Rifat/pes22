@@ -5,36 +5,31 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-const RoleForm = ({ formId, type }) => {
-  const { role } = useSelector(state => state.roles);
-  const navigate = useNavigate();
-  console.log({ role });
-  const dispatch = useDispatch();
+const RoleForm = ({ formId, role, onFormSubmit }) => {
   const {
     register,
-    setValue,
+
     handleSubmit,
     setError,
     formState: { errors }
   } = useForm();
 
   const onSubmit = async data => {
-    if (type === 'create') {
-      await dispatch(addRole({ formData: data, setError }));
-      navigate('/admin/roles');
-    } else {
-      await dispatch(updateRole({ roleId: role.id, formData: data, setError }));
+    try {
+      await onFormSubmit(data);
+    } catch (error) {
+      console.log({ error });
+      if (error.response.status === 422) {
+        const errors = error.response.data.errors;
+        Object.keys(errors).forEach(error => {
+          setError(error, {
+            type: 'manual',
+            message: errors[error]
+          });
+        });
+      }
     }
   };
-
-  useEffect(() => {
-    setValue('name', role.name || '');
-    setValue('guard_name', role.guard_name || '');
-    return () => {
-      console.log('dsad');
-      dispatch(clearRole());
-    };
-  }, [role]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} id={formId}>
@@ -42,6 +37,7 @@ const RoleForm = ({ formId, type }) => {
         fullWidth
         label="Name"
         variant="standard"
+        defaultValue={role?.name}
         error={!!errors.name}
         helperText={errors.name?.message}
         sx={{ mt: 2 }}
@@ -51,7 +47,7 @@ const RoleForm = ({ formId, type }) => {
         fullWidth
         label="Guard Name"
         variant="standard"
-        // defaultValue={type !== 'create' ? role.guard_name : undefined}
+        defaultValue={role?.guard_name}
         error={!!errors.guard_name}
         helperText={errors.guard_name?.message}
         sx={{ mt: 2 }}

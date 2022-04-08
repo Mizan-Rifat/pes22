@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Box, Button, Paper } from '@mui/material';
 import PaperHeader from 'app/components/paper/PaperHeader';
-import { deleteRole, fetchRole } from 'app/redux/slices/rolesSlice';
+import { deleteRole, fetchRole, updateRole } from 'app/redux/slices/rolesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
@@ -30,6 +30,10 @@ const RoleEdit = () => {
     navigate(`/admin/roles`);
   };
 
+  const handleSubmit = async data => {
+    await dispatch(updateRole({ roleId: role.id, formData: data })).unwrap();
+  };
+
   useEffect(() => {
     if (roleId) {
       dispatch(fetchRole(roleId));
@@ -40,9 +44,7 @@ const RoleEdit = () => {
     <>
       <BackToLIstButton onClick={() => navigate(-1)} />
 
-      <Box
-      // sx={{ maxWidth: 900, margin: '0 auto' }}
-      >
+      <Box>
         <Paper variant="layout" sx={{ width: '100%', bgcolor: 'transparent' }}>
           <PaperHeader title="Role" color="primary" />
           <BackdropContainer loading={fetching} hideContent>
@@ -60,7 +62,11 @@ const RoleEdit = () => {
                   </Button>
                 )}
               </ActionToolbar>
-              <RoleForm formId="roleForm" type={roleId ? 'update' : 'create'} />
+              <RoleForm
+                formId="roleForm"
+                onFormSubmit={handleSubmit}
+                role={role}
+              />
               <Box sx={{ mt: 4, textAlign: 'right' }}>
                 <Button
                   variant="contained"

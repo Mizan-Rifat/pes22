@@ -26,25 +26,16 @@ export const fetchRole = createAsyncThunk('roles/fetch_role', async roleId => {
 
 export const addRole = createAsyncThunk(
   'roles/add_role',
-  async ({ formData, setError }, { rejectWithValue }) => {
+  async ({ formData }, { rejectWithValue }) => {
     try {
-      const role = await axios.post(
+      const res = await axios.post(
         `${process.env.MIX_DOMAIN}/api/roles`,
         formData
       );
       toast.success('Successfully created.');
-      return role;
+      return res.data.data;
     } catch (error) {
       toast.error(error.response.data.message);
-      if (error.response.status === 422) {
-        const errors = error.response.data.errors;
-        Object.keys(errors).forEach(error => {
-          setError(error, {
-            type: 'manual',
-            message: errors[error]
-          });
-        });
-      }
       return rejectWithValue(error);
     }
   }
@@ -79,25 +70,16 @@ export const updateUserRoles = createAsyncThunk(
 
 export const updateRole = createAsyncThunk(
   'roles/update_role',
-  async ({ roleId, formData, setError }, { rejectWithValue }) => {
+  async ({ roleId, formData }, { rejectWithValue }) => {
     try {
-      const role = await axios.put(
+      const res = await axios.put(
         `${process.env.MIX_DOMAIN}/api/roles/${roleId}`,
         formData
       );
       toast.success('Successfully updated.');
-      return role;
+      return res.data.data;
     } catch (error) {
       toast.error(error.response.data.message);
-      if (error.response.status === 422) {
-        const errors = error.response.data.errors;
-        Object.keys(errors).forEach(error => {
-          setError(error, {
-            type: 'manual',
-            message: errors[error]
-          });
-        });
-      }
       return rejectWithValue(error);
     }
   }
@@ -152,7 +134,6 @@ export const counterSlice = createSlice({
   initialState: {
     roles: [],
     role: {},
-    openDialog: false,
     fetching: false,
     loading: false
   },
@@ -164,12 +145,6 @@ export const counterSlice = createSlice({
     },
     clearRole: state => {
       state.role = {};
-    },
-    showDialog: state => {
-      state.openDialog = true;
-    },
-    closeDialog: state => {
-      state.openDialog = false;
     }
   },
   extraReducers: builder => {
@@ -187,8 +162,7 @@ export const counterSlice = createSlice({
         state.loading = true;
       })
       .addCase(updateRole.fulfilled, (state, action) => {
-        state.role = action.payload.data;
-        state.openDialog = false;
+        state.role = action.payload;
         state.loading = false;
       })
       .addCase(updateRole.rejected, state => {
@@ -198,8 +172,8 @@ export const counterSlice = createSlice({
         state.loading = true;
       })
       .addCase(addRole.fulfilled, (state, action) => {
-        state.roles.push(action.payload.data);
-        state.openDialog = false;
+        console.log({ action });
+        state.roles.push(action.payload);
         state.loading = false;
       })
       .addCase(addRole.rejected, state => {

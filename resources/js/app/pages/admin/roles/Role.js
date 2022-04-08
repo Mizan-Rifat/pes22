@@ -56,6 +56,7 @@ const Role = () => {
           <ul style={{ padding: 0, margin: 0 }}>
             {role.permissions?.map(permission => (
               <li
+                key={permission.name}
                 style={{
                   listStylePosition: 'inside'
                 }}

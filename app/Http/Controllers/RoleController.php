@@ -28,7 +28,7 @@ class RoleController extends Controller {
 		]);
 
 		$role = Role::create($validatedData);
-		return $role;
+		return  new RoleResource($role);
 	}
 
 	public function show(Role $role) {
@@ -47,7 +47,7 @@ class RoleController extends Controller {
 		]);
 
 		$role->update($validatedData);
-		return $role;
+		return new RoleResource($role);
 	}
 
 	public function destroy(Role $role) {

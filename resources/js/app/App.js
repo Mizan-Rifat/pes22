@@ -17,6 +17,7 @@ import Permission from './pages/admin/permissions/Permission';
 import Users from './pages/admin/users/users';
 import User from './pages/admin/users/user';
 import RoleEdit from './pages/admin/roles/RoleEdit';
+import RoleAdd from './pages/admin/roles/RoleAdd';
 
 const App = () => {
   console.log({ theme });
@@ -40,7 +41,7 @@ const App = () => {
                   <Route index element={<Roles />} />
                   <Route path=":role/edit" element={<RoleEdit />} />
                   <Route path=":role" element={<Role />} />
-                  <Route path="create" element={<RoleEdit />} />
+                  <Route path="create" element={<RoleAdd />} />
                 </Route>
                 <Route path="permissions" element={<Permissions />} />
                 <Route

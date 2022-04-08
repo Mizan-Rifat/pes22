@@ -64,11 +64,10 @@ const Roles = () => {
             whiteSpace: 'normal'
           }
         },
-        Cell: rowData => {
-          const { permissions } = rowData.row.original;
-          console.log({ rowData });
-          return permissions.map(permission => permission.name).join(', ');
-        }
+        Cell: rowData =>
+          rowData.row.original.permissions
+            .map(permission => permission.name)
+            .join(', ')
       }
     ],
     []
