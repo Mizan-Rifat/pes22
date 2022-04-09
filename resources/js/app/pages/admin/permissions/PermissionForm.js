@@ -1,15 +1,8 @@
 import { TextField } from '@mui/material';
-import {
-  addPermission,
-  updatePermission
-} from 'app/redux/slices/permissionsSlice';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
 
-const PermissionForm = ({ formId, type }) => {
-  const { permission } = useSelector(state => state.permissions);
-  const dispatch = useDispatch();
+const PermissionForm = ({ formId, permission, onFormSubmit }) => {
   const {
     register,
     handleSubmit,
@@ -18,16 +11,19 @@ const PermissionForm = ({ formId, type }) => {
   } = useForm();
 
   const onSubmit = async data => {
-    if (type === 'add') {
-      await dispatch(addPermission({ formData: data, setError }));
-    } else {
-      await dispatch(
-        updatePermission({
-          permissionId: permission.id,
-          formData: data,
-          setError
-        })
-      );
+    try {
+      await onFormSubmit(data);
+    } catch (error) {
+      console.log({ error });
+      if (error.response.status === 422) {
+        const errors = error.response.data.errors;
+        Object.keys(errors).forEach(error => {
+          setError(error, {
+            type: 'manual',
+            message: errors[error]
+          });
+        });
+      }
     }
   };
 
@@ -37,7 +33,7 @@ const PermissionForm = ({ formId, type }) => {
         fullWidth
         label="Name"
         variant="standard"
-        defaultValue={type !== 'add' ? permission.name : undefined}
+        defaultValue={permission?.name}
         error={!!errors.name}
         helperText={errors.name?.message}
         sx={{ mt: 1 }}
@@ -47,7 +43,7 @@ const PermissionForm = ({ formId, type }) => {
         fullWidth
         label="Guard Name"
         variant="standard"
-        defaultValue={type !== 'add' ? permission.guard_name : undefined}
+        defaultValue={permission?.guard_name}
         error={!!errors.guard_name}
         helperText={errors.guard_name?.message}
         sx={{ mt: 1 }}

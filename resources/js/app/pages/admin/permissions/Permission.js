@@ -3,14 +3,12 @@ import DetailsGrid from 'app/components/common/DetailsGrid';
 import PaperHeader from 'app/components/paper/PaperHeader';
 import {
   deletePermission,
-  fetchPermission,
-  showDialog
+  fetchPermission
 } from 'app/redux/slices/permissionsSlice';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
-import PermissionDialog from './PermissionDialog';
 import ActionToolbar from 'app/components/common/ActionToolbar';
 import { useConfirmation } from 'app/providers/ConfirmationProvider';
 import BackToLIstButton from 'app/components/common/BackToLIstButton';
@@ -68,7 +66,8 @@ const Permission = () => {
             variant="outlined"
             startIcon={<EditIcon />}
             size="small"
-            onClick={() => dispatch(showDialog())}
+            component={Link}
+            to="edit"
           >
             Edit
           </Button>
@@ -84,8 +83,6 @@ const Permission = () => {
         </ActionToolbar>
         <DetailsGrid data={data} fullColumn />
       </Paper>
-
-      <PermissionDialog title="Update permission" type="update" />
     </>
   );
 };

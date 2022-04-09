@@ -12,8 +12,7 @@ class PermissionController extends Controller {
 
 	public function index() {
 		// $this->authorize('viewAny', Permission::class);
-		// return Permission::all();
-		return Permission::all();
+		return PermissionResource::collection(Permission::all());
 	}
 
 	public function store(Request $request) {
@@ -27,7 +26,7 @@ class PermissionController extends Controller {
 		]);
 
 		$permission = Permission::create($validatedData);
-		return $permission;
+		return new PermissionResource($permission);
 	}
 
 	public function show(Permission $permission) {
@@ -45,7 +44,7 @@ class PermissionController extends Controller {
 		]);
 
 		$permission->update($validatedData);
-		return $permission;
+		return new PermissionResource($permission);
 	}
 
 	public function destroy(Permission $permission) {

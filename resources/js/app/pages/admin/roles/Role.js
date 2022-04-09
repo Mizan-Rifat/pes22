@@ -10,13 +10,11 @@ import ActionToolbar from 'app/components/common/ActionToolbar';
 import { useConfirmation } from 'app/providers/ConfirmationProvider';
 import BackToLIstButton from 'app/components/common/BackToLIstButton';
 import BackdropContainer from 'app/components/backdrop/BackdropContainer';
-import UserRolePermission from '../users/UserRolePermission';
-import RolePermission from './RolePermission';
 
 const Role = () => {
   const { role: roleId } = useParams();
 
-  const { role, fetching, loading } = useSelector(state => state.roles);
+  const { role, fetching } = useSelector(state => state.roles);
   const confirm = useConfirmation();
 
   const dispatch = useDispatch();

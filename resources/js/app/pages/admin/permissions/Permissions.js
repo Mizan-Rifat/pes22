@@ -4,14 +4,13 @@ import React, { useEffect } from 'react';
 import Table from 'app/components/table/Table';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ActionToolbar from 'app/components/common/ActionToolbar';
 import { Add } from '@mui/icons-material';
-import PermissionDialog from './PermissionDialog';
 import { useConfirmation } from 'app/providers/ConfirmationProvider';
 import {
-  fetchPermissions,
-  showDialog
+  deletePermission,
+  fetchPermissions
 } from 'app/redux/slices/permissionsSlice';
 
 const Permissions = () => {
@@ -86,7 +85,8 @@ const Permissions = () => {
             variant="outlined"
             startIcon={<Add />}
             size="small"
-            onClick={() => dispatch(showDialog())}
+            component={Link}
+            to="create"
           >
             New
           </Button>
@@ -102,7 +102,6 @@ const Permissions = () => {
           bulkActions={bulkActions}
         />
       </Paper>
-      <PermissionDialog title="Add a new permission" type="add" />
     </>
   );
 };

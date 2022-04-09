@@ -7,21 +7,11 @@ export const fetchPermissions = createAsyncThunk(
   'permissions/fetch_permissions',
   async (_, { rejectWithValue }) => {
     try {
-      const permissions = await axios.get(
-        `${process.env.MIX_DOMAIN}/api/permissions`
-      );
-      return permissions;
+      const res = await axios.get(`${process.env.MIX_DOMAIN}/api/permissions`);
+      return res.data.data;
     } catch (error) {
       return rejectWithValue(error);
     }
-    // const permissions = await axios
-    //   .get(`${process.env.MIX_DOMAIN}/api/permissions`)
-    //   .catch(err => {
-    //     console.log([err]);
-    //     return Promise.reject(err);
-    //   });
-    // console.log({ permissions });
-    // return permissions;
   }
 );
 
@@ -29,11 +19,10 @@ export const fetchPermission = createAsyncThunk(
   'permissions/fetch_permission',
   async (permissionId, { rejectWithValue }) => {
     try {
-      const permission = await axios.get(
+      const res = await axios.get(
         `${process.env.MIX_DOMAIN}/api/permissions/${permissionId}`
       );
-      console.log({ permission });
-      return permission;
+      return res.data.data;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -42,25 +31,16 @@ export const fetchPermission = createAsyncThunk(
 
 export const addPermission = createAsyncThunk(
   'permissions/add_permission',
-  async ({ formData, setError }, { rejectWithValue }) => {
+  async ({ formData }, { rejectWithValue }) => {
     try {
-      const permission = await axios.post(
+      const res = await axios.post(
         `${process.env.MIX_DOMAIN}/api/permissions`,
         formData
       );
       toast.success('Successfully created.');
-      return permission;
+      return res.data.data;
     } catch (error) {
       toast.error(error.response.data.message);
-      if (error.response.status === 422) {
-        const errors = error.response.data.errors;
-        Object.keys(errors).forEach(error => {
-          setError(error, {
-            type: 'manual',
-            message: errors[error]
-          });
-        });
-      }
       return rejectWithValue(error);
     }
   }
@@ -68,25 +48,17 @@ export const addPermission = createAsyncThunk(
 
 export const updatePermission = createAsyncThunk(
   'permissions/update_permission',
-  async ({ permissionId, formData, setError }, { rejectWithValue }) => {
+  async ({ permissionId, formData }, { rejectWithValue }) => {
     try {
-      const permission = await axios.put(
+      const res = await axios.put(
         `${process.env.MIX_DOMAIN}/api/permissions/${permissionId}`,
         formData
       );
       toast.success('Successfully updated.');
-      return permission;
+      return res.data.data;
     } catch (error) {
       toast.error(error.response.data.message);
-      if (error.response.status === 422) {
-        const errors = error.response.data.errors;
-        Object.keys(errors).forEach(error => {
-          setError(error, {
-            type: 'manual',
-            message: errors[error]
-          });
-        });
-      }
+
       return rejectWithValue(error);
     }
   }
@@ -140,8 +112,7 @@ export const counterSlice = createSlice({
   initialState: {
     permissions: [],
     permission: {},
-    openDialog: false,
-    fetching: true,
+    fetching: false,
     loading: false
   },
   reducers: {
@@ -149,31 +120,25 @@ export const counterSlice = createSlice({
       state.permissions = action.payload.permissions;
       state.fetching = false;
       state.loading = false;
-    },
-    showDialog: state => {
-      state.openDialog = true;
-    },
-    closeDialog: state => {
-      state.openDialog = false;
     }
   },
   extraReducers: builder => {
     builder
       .addCase(fetchPermissions.pending, state => {
         state.fetching = true;
-        state.loading = true;
       })
-      .addCase(fetchPermissions.fulfilled, (state, action) => {
-        state.permissions = action.payload.data;
+      .addCase(fetchPermissions.fulfilled, (state, { payload }) => {
+        state.permissions = payload;
         state.fetching = false;
-        state.loading = false;
+      })
+      .addCase(fetchPermissions.rejected, state => {
+        state.fetching = false;
       })
       .addCase(updatePermission.pending, state => {
         state.loading = true;
       })
       .addCase(updatePermission.fulfilled, (state, action) => {
         state.permission = action.payload.data;
-        state.openDialog = false;
         state.loading = false;
       })
       .addCase(updatePermission.rejected, state => {
@@ -182,9 +147,8 @@ export const counterSlice = createSlice({
       .addCase(addPermission.pending, state => {
         state.loading = true;
       })
-      .addCase(addPermission.fulfilled, (state, action) => {
-        state.permissions.push(action.payload.data);
-        state.openDialog = false;
+      .addCase(addPermission.fulfilled, (state, { payload }) => {
+        state.permissions.push(payload);
         state.loading = false;
       })
       .addCase(addPermission.rejected, state => {
@@ -204,12 +168,14 @@ export const counterSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchPermission.pending, state => {
-        state.loading = true;
+        state.fetching = true;
       })
-      .addCase(fetchPermission.fulfilled, (state, action) => {
-        state.permission = action.payload.data.data;
+      .addCase(fetchPermission.fulfilled, (state, { payload }) => {
+        state.permission = payload;
         state.fetching = false;
-        state.loading = false;
+      })
+      .addCase(fetchPermission.rejected, state => {
+        state.fetching = false;
       })
       .addCase(updateUserPermissions.pending, state => {
         state.loading = true;
@@ -220,6 +186,6 @@ export const counterSlice = createSlice({
   }
 });
 
-export const { showDialog, closeDialog } = counterSlice.actions;
+// export const { showDialog, closeDialog } = counterSlice.actions;
 
 export default counterSlice.reducer;

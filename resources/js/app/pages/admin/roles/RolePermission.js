@@ -3,15 +3,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useConfirmation } from 'app/providers/ConfirmationProvider';
-import {
-  fetchRoles,
-  updateRolePermissions,
-  updateUserRoles
-} from 'app/redux/slices/rolesSlice';
-import {
-  fetchPermissions,
-  updateUserPermissions
-} from 'app/redux/slices/permissionsSlice';
+import { updateRolePermissions } from 'app/redux/slices/rolesSlice';
+import { fetchPermissions } from 'app/redux/slices/permissionsSlice';
 import { Box } from '@mui/system';
 import SaveIcon from '@mui/icons-material/Save';
 import { useForm } from 'react-hook-form';
@@ -21,8 +14,6 @@ const RolePermission = ({ roleId, title, data, loading }) => {
     register,
     handleSubmit,
     setError,
-    getFieldState,
-    watch,
     formState: { errors }
   } = useForm();
   const { permissions } = useSelector(state => state.permissions);
@@ -48,7 +39,6 @@ const RolePermission = ({ roleId, title, data, loading }) => {
         })
       );
     } catch (error) {}
-    // await dispatch(updateUser({ userId: user.id, formData: data, setError }));
   };
 
   useEffect(async () => {
@@ -57,12 +47,7 @@ const RolePermission = ({ roleId, title, data, loading }) => {
 
   return (
     !loading && (
-      <Box
-      // sx={{
-      //   pb: 2,
-      //   borderBottom: theme => `1px solid ${theme.palette.grey[300]}`
-      // }}
-      >
+      <Box>
         <p style={{ fontWeight: 400 }}>{title}</p>
 
         <form onSubmit={handleSubmit(onSubmit)}>
