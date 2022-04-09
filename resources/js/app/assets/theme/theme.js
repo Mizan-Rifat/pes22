@@ -21,7 +21,8 @@ let theme = createTheme({
     warning: {
       main: warningColor[0],
       light: warningColor[1],
-      dark: warningColor[2]
+      dark: warningColor[2],
+      contrastText: '#fff'
     },
     error: {
       main: errorColor[0],
@@ -69,7 +70,8 @@ let theme = createTheme({
 theme = createTheme(theme, {
   palette: {
     background: {
-      default: theme.palette.grey[200]
+      default: theme.palette.grey[200],
+      paper: theme.palette.grey[200]
     }
   },
   typography: {
@@ -135,18 +137,31 @@ theme = createTheme(theme, {
       styleOverrides: {
         root: {
           fontSize: '13px',
-          padding: [10, 15],
+          // padding: [10, 15],
+          padding: '8px 16px',
           margin: '0 5px',
           borderRadius: '2px',
           transition: 'all 150ms linear',
           fontWeight: '400',
-          // lineHeight: '1.42857143',
-          // color: grayColor[8],
+          '&.Mui-selected': {
+            '&:hover': {
+              color: theme.palette.text.primary,
+              '& .MuiCheckbox-root': {
+                color: theme.palette.primary.main
+              }
+            }
+          },
+          '& .MuiCheckbox-root': {
+            padding: '0 8px 0 0'
+          },
           whiteSpace: 'nowrap',
           '&:hover': {
             backgroundColor: theme.palette.primary.main,
             color: whiteColor,
-            boxShadow: theme.themeShadows.primary
+            boxShadow: theme.themeShadows.primary,
+            '& .MuiCheckbox-root': {
+              color: theme.palette.common.white
+            }
           }
         }
       }
@@ -158,7 +173,8 @@ theme = createTheme(theme, {
           props: { variant: 'layout' },
           style: {
             borderRadius: '0.375rem',
-            marginTop: 20
+            marginTop: 20,
+            padding: '24px'
           }
         }
       ],
@@ -171,6 +187,13 @@ theme = createTheme(theme, {
           // '&:not(.MuiAppBar-root)': {
           //   borderRadius: '0.375rem'
           // }
+        }
+      }
+    },
+    MuiTableContainer: {
+      styleOverrides: {
+        root: {
+          padding: 0
         }
       }
     },
@@ -224,7 +247,12 @@ theme = createTheme(theme, {
           '&:after': {
             borderColor: theme.palette[ownerState.color].main
           }
-        })
+        }),
+        input: {
+          '&:focus': {
+            backgroundColor: 'transparent'
+          }
+        }
       }
     },
     MuiInputLabel: {
@@ -232,6 +260,37 @@ theme = createTheme(theme, {
         root: {
           color: theme.palette.grey[500],
           fontWeight: 400
+        }
+      }
+    },
+    MuiDialog: {
+      variants: [
+        {
+          props: { variant: 'edit' },
+          style: {
+            '& .MuiDialog-paper': {
+              minWidth: 400,
+              maxWidth: 500
+            }
+          }
+        }
+      ],
+      styleOverrides: {
+        paper: {
+          borderRadius: '.375rem',
+          '& .MuiDialogTitle-root': {
+            fontWeight: 300
+          }
+        }
+      }
+    },
+    MuiInputBase: {
+      input: {
+        styleOverrides: {
+          backgroundColor: 'red',
+          '&:focus': {
+            backgroundColor: 'red'
+          }
         }
       }
     }

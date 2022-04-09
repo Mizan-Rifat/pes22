@@ -15,7 +15,7 @@ const path = require('path');
 console.log(path.resolve(__dirname, 'resources/js/react/assets'));
 
 mix.disableNotifications();
-mix.js('resources/js/app.js', 'public/js').react();
+mix.js('resources/js/app.js', 'public/js').react().sourceMaps();
 mix.webpackConfig({
   resolve: {
     alias: {
@@ -28,3 +28,4 @@ mix.webpackConfig({
     }
   }
 });
+mix.browserSync('localhost:8000');

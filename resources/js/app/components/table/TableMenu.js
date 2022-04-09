@@ -4,11 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-const options = ['None', 'Atria', 'Callisto'];
-
-const ITEM_HEIGHT = 48;
-
-export default function LongMenu() {
+const TableMenu = ({ rowId, rowActions }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = event => {
@@ -16,6 +12,10 @@ export default function LongMenu() {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleMenuItemClick = actionHandler => {
+    setAnchorEl(null);
+    actionHandler(rowId);
   };
 
   return (
@@ -44,16 +44,17 @@ export default function LongMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        {options.map(option => (
+        {rowActions.map(option => (
           <MenuItem
-            key={option}
-            selected={option === 'Pyxis'}
-            onClick={handleClose}
+            key={option.title}
+            onClick={() => handleMenuItemClick(option.handler)}
           >
-            {option}
+            {option.title}
           </MenuItem>
         ))}
       </Menu>
     </div>
   );
-}
+};
+
+export default TableMenu;

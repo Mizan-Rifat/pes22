@@ -3,20 +3,20 @@ import PaperHeader from 'components/paper/PaperHeader';
 import React, { useEffect } from 'react';
 import Table from 'app/components/table/Table';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { Link, useNavigate } from 'react-router-dom';
+import {
+  deleteUser,
+  fetchUsers,
+  showDialog
+} from 'app/redux/slices/usersSlice';
+import { useNavigate } from 'react-router-dom';
 import ActionToolbar from 'app/components/common/ActionToolbar';
 import { Add } from '@mui/icons-material';
+import UserDialog from './UserDialog';
 import { useConfirmation } from 'app/providers/ConfirmationProvider';
-import {
-  deletePermission,
-  fetchPermissions
-} from 'app/redux/slices/permissionsSlice';
+import axios from 'axios';
 
-const Permissions = () => {
-  const { permissions, fetching, loading } = useSelector(
-    state => state.permissions
-  );
+const Users = () => {
+  const { users, fetching, loading } = useSelector(state => state.users);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const confirm = useConfirmation();
@@ -35,7 +35,7 @@ const Permissions = () => {
         await confirm({
           variant: 'error'
         });
-        await dispatch(deletePermission(id)).unwrap();
+        await dispatch(deleteUser(id)).unwrap();
       }
     }
   ];
@@ -56,54 +56,55 @@ const Permissions = () => {
         accessor: 'id'
       },
       {
-        Header: 'Permission',
+        Header: 'User',
         accessor: 'name'
       },
       {
-        Header: 'Guard',
-        accessor: 'guard_name'
+        Header: 'Email',
+        accessor: 'email'
       }
     ],
     []
   );
 
-  useEffect(() => {
-    dispatch(fetchPermissions());
+  useEffect(async () => {
+    // const user = await axios.post('/api/login', {
+    //   email: 'mizan@mail.com',
+    //   password: 'password'
+    // });
+
+    // console.log({ user });
+    dispatch(fetchUsers());
   }, []);
 
   return (
     <>
       <Paper variant="layout" sx={{ width: '100%', bgcolor: 'transparent' }}>
-        <PaperHeader
-          title="Permissions"
-          subTitle="Choose user permissions"
-          color="primary"
-        />
+        <PaperHeader title="Users" color="primary" />
 
         <ActionToolbar>
           <Button
             variant="outlined"
             startIcon={<Add />}
             size="small"
-            component={Link}
-            to="create"
+            onClick={() => dispatch(showDialog())}
           >
             New
           </Button>
         </ActionToolbar>
 
         <Table
-          title="Permissions"
+          title="Users"
           columns={columns}
-          data={permissions}
+          data={users}
           loading={fetching || loading}
-          // minRow={10}
           rowActions={rowActions}
           bulkActions={bulkActions}
         />
       </Paper>
+      <UserDialog title="Add a new user" type="add" />
     </>
   );
 };
 
-export default Permissions;
+export default Users;

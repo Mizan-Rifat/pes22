@@ -1,18 +1,12 @@
 import React from 'react';
-
 import Checkbox from '@mui/material/Checkbox';
 import MaUTable from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-// import TableFooter from '@mui/materialTableFooter';
 import TableHead from '@mui/material/TableHead';
-// import TablePagination from '@mui/materialTablePagination';
-// import TablePaginationActions from './TablePaginationActions';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
-import { alpha } from '@mui/material/styles';
-// import TableToolbar from './TableToolbar';
 import {
   useGlobalFilter,
   usePagination,
@@ -20,30 +14,8 @@ import {
   useSortBy,
   useTable
 } from 'react-table';
-import {
-  Button,
-  FormControl,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
-  // TableFooter,
-  TablePagination,
-  Toolbar,
-  Tooltip,
-  Typography
-} from '@mui/material';
-import {
-  Delete,
-  FilterList,
-  FirstPage,
-  KeyboardArrowLeft,
-  KeyboardArrowRight,
-  LastPage
-} from '@mui/icons-material';
+import { Backdrop, CircularProgress } from '@mui/material';
 import { Box } from '@mui/system';
-import { useTheme } from '@mui/material/styles';
-import TableSearchBox from './TableSearchBox';
 import TableToolbar from './TableToolbar';
 import TableFooter from './TableFooter';
 import TableMenu from './TableMenu';
@@ -68,11 +40,13 @@ const EnhancedTable = ({
   columns,
   data,
   perPage = 10,
-  updateMyData,
-  skipPageReset,
+  loading,
   selection = true,
   search = true,
-  title
+  minRow = 5,
+  title,
+  rowActions = [],
+  bulkActions = {}
 }) => {
   const {
     getTableProps,
@@ -81,15 +55,12 @@ const EnhancedTable = ({
     page,
     gotoPage,
     setPageSize,
-    preGlobalFilteredRows,
     setGlobalFilter,
     state: { pageIndex, pageSize, selectedRowIds, globalFilter }
   } = useTable(
     {
       columns,
       data,
-      autoResetPage: !skipPageReset,
-      updateMyData,
       initialState: { pageSize: perPage ? perPage : data.length }
     },
     useGlobalFilter,
@@ -117,15 +88,27 @@ const EnhancedTable = ({
       }
     }
   );
-
   return (
-    <TableContainer>
+    <TableContainer sx={{ position: 'relative', opacity: loading ? 0.5 : 1 }}>
+      <Backdrop
+        sx={{
+          color: '#fff',
+          zIndex: theme => theme.zIndex.drawer + 1,
+          position: 'absolute',
+          bgcolor: 'transparent'
+        }}
+        open={loading}
+        // onClick={handleClose}
+      >
+        <CircularProgress />
+      </Backdrop>
       <TableToolbar
         selectedRowIds={selectedRowIds}
         title={title}
         search={search}
         globalFilter={globalFilter}
         setGlobalFilter={setGlobalFilter}
+        bulkActions={bulkActions}
       />
       <MaUTable {...getTableProps()}>
         <TableHead sx={{ color: theme => theme.palette.primary.main }}>
@@ -134,7 +117,7 @@ const EnhancedTable = ({
               {headerGroup.headers.map(column => {
                 return (
                   <TableCell
-                    padding={column.id === 'selection' ? 'checkbox' : 'default'}
+                    padding={column.id === 'selection' ? 'checkbox' : 'normal'}
                     sortDirection={false}
                     {...(column.id === 'selection'
                       ? column.getHeaderProps()
@@ -169,7 +152,9 @@ const EnhancedTable = ({
                 {row.cells.map(cell => {
                   return (
                     <TableCell
-                      padding={cell.column.id === 'selection' && 'checkbox'}
+                      padding={
+                        cell.column.id === 'selection' ? 'checkbox' : 'normal'
+                      }
                       {...cell.getCellProps(cell.column.cellProps)}
                     >
                       {cell.render('Cell')}
@@ -177,11 +162,33 @@ const EnhancedTable = ({
                   );
                 })}
                 <TableCell padding="checkbox" align="right">
-                  <TableMenu />
+                  <TableMenu rowId={row.original.id} rowActions={rowActions} />
                 </TableCell>
               </TableRow>
             );
           })}
+
+          {page.length < minRow && (
+            <>
+              {Array.from(Array(minRow - page.length).keys()).map(
+                (item, index) => (
+                  <TableRow key={index}>
+                    <TableCell
+                      sx={{ borderBottom: 'none' }}
+                      colSpan={columns.length + 2}
+                    >
+                      {index === Math.floor(minRow / 2) &&
+                        page.length === 0 && (
+                          <Box sx={{ textAlign: 'center' }}>
+                            No records to display
+                          </Box>
+                        )}
+                    </TableCell>
+                  </TableRow>
+                )
+              )}
+            </>
+          )}
         </TableBody>
 
         <TableFooter

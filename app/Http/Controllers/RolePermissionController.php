@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
@@ -25,11 +26,12 @@ class RolePermissionController extends Controller {
 	// }
 
 	public function givePermissionToRole(Request $request) {
-		$this->authorize('assignRolePermission', Role::class);
+		// $this->authorize('assignRolePermission', Role::class);
+		// return $request;
 		$validatedData = $request->validate([
 			'role' => ['required', 'numeric', 'exists:roles,id'],
-			'permission' => ['array'],
-			'permission.*' => ['numeric', 'exists:permissions,id'],
+			'permission' => ['required', 'array'],
+			'permission.*' => ['exists:permissions,id'],
 		]);
 		$role = Role::find($validatedData['role']);
 		return $role->syncPermissions($validatedData['permission']);
@@ -41,14 +43,15 @@ class RolePermissionController extends Controller {
 	}
 
 	public function assignRoleToUser(Request $request) {
-		$this->authorize('assignRolePermission', Role::class);
+		// $this->authorize('assignRolePermission', Role::class);
 		$validatedData = $request->validate([
 			'user' => ['required', 'numeric', 'exists:users,id'],
 			'role' => ['array'],
 			'role.*' => ['numeric', 'exists:roles,id'],
 		]);
 		$user = User::find($validatedData['user']);
-		return $user->syncRoles($validatedData['role']);
+		$user->syncRoles($validatedData['role']);
+		return new UserResource($user);
 	}
 
 	public function removeRoleFromUser(User $user, Role $role) {
@@ -62,7 +65,7 @@ class RolePermissionController extends Controller {
 	}
 
 	public function getAllRolesOfUser(User $user) {
-		$this->authorize('viewRolePermission', Role::class);
+		// $this->authorize('viewRolePermission', Role::class);
 		return $user->getRoleNames();
 	}
 

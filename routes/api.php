@@ -4,7 +4,9 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +22,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 	return $request->user();
+});
+
+Route::get('/test', function () {
+	// return User::with('roles')->get();
+	$user = User::find(1);
+	$user->load('roles');
+	return $user->roles;
 });
 
 Route::resource('permissions', PermissionController::class, ['except' => ['create', 'edit']]);

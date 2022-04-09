@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RoleResource;
+use App\Http\Resources\UserCollection;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,12 +12,13 @@ use Spatie\Permission\Models\Role;
 class RoleController extends Controller {
 
 	public function index() {
-		$this->authorize('viewAny', Role::class);
-		return Role::all();
+		// $this->authorize('viewAny', Role::class);
+		// return Role::all();
+		return RoleResource::collection(Role::all());
 	}
 
 	public function store(Request $request) {
-		$this->authorize('create', Role::class);
+		// $this->authorize('create', Role::class);
 		$validatedData = $request->validate([
 			'name' => [
 				'required', 'string',
@@ -25,16 +28,17 @@ class RoleController extends Controller {
 		]);
 
 		$role = Role::create($validatedData);
-		return $role;
+		return  new RoleResource($role);
 	}
 
 	public function show(Role $role) {
-		$this->authorize('view', Role::class);
-		return $role;
+		// $this->authorize('view', Role::class);
+		// return $role->permissions;
+		return new RoleResource($role);
 	}
 
 	public function update(Request $request, Role $role) {
-		$this->authorize('update', Role::class);
+		// $this->authorize('update', Role::class);
 		$validatedData = $request->validate([
 			'name' => [
 				'string', Rule::unique(Role::class)->ignore($role)
@@ -43,11 +47,11 @@ class RoleController extends Controller {
 		]);
 
 		$role->update($validatedData);
-		return $role;
+		return new RoleResource($role);
 	}
 
 	public function destroy(Role $role) {
-		$this->authorize('delete', Role::class);
+		// $this->authorize('delete', Role::class);
 		return $role->delete();
 	}
 }

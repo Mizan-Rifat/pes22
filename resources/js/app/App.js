@@ -9,28 +9,64 @@ import Home from './layouts/main/Home';
 import Test from './layouts/main/Test';
 import Roles from 'pages/admin/roles/Roles';
 import Permissions from 'pages/admin/permissions/Permissions';
+import Role from 'pages/admin/roles/Role';
+import { ToastContainer, Slide } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ConfirmationProvider from './providers/ConfirmationProvider';
+import Permission from './pages/admin/permissions/Permission';
+import Users from './pages/admin/users/users';
+import User from './pages/admin/users/user';
+import RoleEdit from './pages/admin/roles/RoleEdit';
+import RoleAdd from './pages/admin/roles/RoleAdd';
+import PermissionEdit from './pages/admin/permissions/PermissionEdit';
+import PermissionAdd from './pages/admin/permissions/PermissionAdd';
 
 const App = () => {
   console.log({ theme });
   return (
     <>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
+        <ConfirmationProvider>
+          <CssBaseline />
 
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<MainLayout />}>
-              <Route index element={<Home />} />
-              <Route path="/test" element={<Test />} />
-            </Route>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<MainLayout />}>
+                <Route index element={<Home />} />
+                <Route path="/test" element={<Test />} />
+              </Route>
 
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route path="roles" element={<Roles />} />
-              <Route path="permissions" element={<Permissions />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-        {/* <AdminLayout /> */}
+              <Route path="admin" element={<AdminLayout />}>
+                <Route path="users" element={<Users />} />
+                <Route path="users/:user" element={<User />} />
+                <Route path="roles">
+                  <Route index element={<Roles />} />
+                  <Route path=":role/edit" element={<RoleEdit />} />
+                  <Route path=":role" element={<Role />} />
+                  <Route path="create" element={<RoleAdd />} />
+                </Route>
+                <Route path="permissions">
+                  <Route index element={<Permissions />} />
+                  <Route path=":permission/edit" element={<PermissionEdit />} />
+                  <Route path=":permission" element={<Permission />} />
+                  <Route path="create" element={<PermissionAdd />} />
+                </Route>
+              </Route>
+            </Routes>
+          </BrowserRouter>
+
+          <ToastContainer
+            transition={Slide}
+            position="top-right"
+            autoClose={4000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            draggable
+            pauseOnHover
+          />
+        </ConfirmationProvider>
       </ThemeProvider>
     </>
   );

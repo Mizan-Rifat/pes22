@@ -8,8 +8,8 @@ const PaperHeader = props => {
     <Box
       sx={theme => ({
         p: 2,
-        mt: -2.5,
-        mx: 2,
+        mt: -5.5,
+        // mx: 2,
         borderRadius: 1,
         zIndex: '3 !important',
         color: theme.palette.common.white,

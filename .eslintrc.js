@@ -2,6 +2,7 @@
 module.exports = {
   env: {
     browser: true,
+    node: true,
     es2021: true
   },
   extends: [
@@ -20,6 +21,7 @@ module.exports = {
   rules: {
     'react/jsx-key': 'off',
     'react/display-name': 'off',
-    'react/prop-types': 'off'
+    'react/prop-types': 'off',
+    'prettier/prettier': ['error', { endOfLine: 'auto' }]
   }
 };

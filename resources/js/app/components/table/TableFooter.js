@@ -74,10 +74,15 @@ const TableFooter = ({ data, pageSize, pageIndex, gotoPage, setPageSize }) => {
   };
   return (
     <MuiTableFooter>
-      <TableRow>
+      <TableRow
+        sx={{
+          '& .MuiTableCell-root': {
+            borderTop: theme => `1px solid ${theme.palette.grey[300]}`
+          }
+        }}
+      >
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, { label: 'All', value: data.length }]}
-          colSpan={7}
           count={data.length}
           rowsPerPage={pageSize}
           page={pageIndex}
