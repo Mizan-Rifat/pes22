@@ -1,44 +1,28 @@
+import React from 'react';
 import { Button, Checkbox, FormControlLabel, Grid } from '@mui/material';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { useConfirmation } from 'app/providers/ConfirmationProvider';
-import { fetchRoles, updateUserRoles } from 'app/redux/slices/rolesSlice';
-import {
-  fetchPermissions,
-  updateUserPermissions
-} from 'app/redux/slices/permissionsSlice';
+import { useDispatch } from 'react-redux';
+import { updateUserRoles } from 'app/redux/slices/rolesSlice';
 import { Box } from '@mui/system';
 import SaveIcon from '@mui/icons-material/Save';
 import { useForm } from 'react-hook-form';
 
-const UserRole = ({ user, roles }) => {
-  const {
-    register,
-    handleSubmit,
-    setError,
-    getFieldState,
-    watch,
-    formState: { errors }
-  } = useForm();
+const UserRoleForm = ({ user, roles }) => {
+  const { register, handleSubmit } = useForm();
 
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
-
-  const onSubmit = data => {
+  const onSubmit = async data => {
+    if (!Array.isArray(data.roles)) {
+      data.roles = [data.roles];
+    }
     console.log({ data });
+    await dispatch(
+      updateUserRoles({ formData: { user: user.id, ...data } })
+    ).unwrap();
   };
 
   return (
-    <Box
-      sx={
-        {
-          // p: 2,
-          // borderBottom: theme => `1px solid ${theme.palette.grey[300]}`
-        }
-      }
-    >
+    <Box>
       <p style={{ fontWeight: 400 }}>Roles</p>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -53,7 +37,7 @@ const UserRole = ({ user, roles }) => {
                     )}
                     size="small"
                     value={item.id}
-                    {...register('roles')}
+                    {...register('role')}
                   />
                 }
                 label={item.name}
@@ -76,4 +60,4 @@ const UserRole = ({ user, roles }) => {
   );
 };
 
-export default UserRole;
+export default UserRoleForm;

@@ -12,7 +12,6 @@ import { useNavigate } from 'react-router-dom';
 import ActionToolbar from 'app/components/common/ActionToolbar';
 import { Add } from '@mui/icons-material';
 import { useConfirmation } from 'app/providers/ConfirmationProvider';
-import axios from 'axios';
 
 const Users = () => {
   const { users, fetching, loading } = useSelector(state => state.users);
@@ -77,12 +76,6 @@ const Users = () => {
   );
 
   useEffect(async () => {
-    // const user = await axios.post('/api/login', {
-    //   email: 'mizan@mail.com',
-    //   password: 'password'
-    // });
-
-    // console.log({ user });
     dispatch(fetchUsers());
   }, []);
 

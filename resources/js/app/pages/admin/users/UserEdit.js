@@ -1,13 +1,7 @@
+import React, { useEffect } from 'react';
 import { Box, Button, Paper } from '@mui/material';
-import DetailsGrid from 'app/components/common/DetailsGrid';
 import PaperHeader from 'app/components/paper/PaperHeader';
-import {
-  deleteUser,
-  fetchUser,
-  showDialog,
-  updateUser
-} from 'app/redux/slices/usersSlice';
-import React, { useEffect, useState } from 'react';
+import { deleteUser, fetchUser } from 'app/redux/slices/usersSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
@@ -15,15 +9,12 @@ import ActionToolbar from 'app/components/common/ActionToolbar';
 import { useConfirmation } from 'app/providers/ConfirmationProvider';
 import BackToLIstButton from 'app/components/common/BackToLIstButton';
 import BackdropContainer from 'app/components/backdrop/BackdropContainer';
-import UserForm from './UserForm';
 import { fetchRoles } from 'app/redux/slices/rolesSlice';
-import UserRole from './UserRole';
-// import UserRolePermission from './UserRole';
+import UserBasicForm from './UserBasicForm';
+import UserRoleForm from './UserRoleForm';
 
 const UserEdit = () => {
   const { user: userId } = useParams();
-
-  console.log({ userId });
 
   const { user, fetching, loading } = useSelector(state => state.users);
   const { roles, fetching: rolesFetching } = useSelector(state => state.roles);
@@ -38,10 +29,6 @@ const UserEdit = () => {
     });
     await dispatch(deleteUser(user.id)).unwrap();
     navigate(`/admin/users`);
-  };
-
-  const handleSubmit = async data => {
-    await dispatch(updateUser({ userId: user.id, formData: data })).unwrap();
   };
 
   useEffect(() => {
@@ -73,23 +60,8 @@ const UserEdit = () => {
                 Delete
               </Button>
             </ActionToolbar>
-            <UserForm
-              formId="userForm"
-              onFormSubmit={handleSubmit}
-              user={user}
-              roles={roles}
-            />
-            <Box sx={{ mt: 4, textAlign: 'right' }}>
-              <Button
-                variant="contained"
-                type="submit"
-                size="small"
-                form="userForm"
-              >
-                Submit
-              </Button>
-            </Box>
-            <UserRole roles={roles} user={user} />
+            <UserBasicForm user={user} />
+            <UserRoleForm user={user} roles={roles} />
           </BackdropContainer>
         </Paper>
       </Box>

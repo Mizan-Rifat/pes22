@@ -1,4 +1,6 @@
 import {
+  Box,
+  Button,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -15,7 +17,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
-const UserForm = ({ formId, onFormSubmit, user, roles }) => {
+const Form = ({ onFormSubmit, children }) => {
   const dispatch = useDispatch();
   const {
     register,
@@ -47,30 +49,15 @@ const UserForm = ({ formId, onFormSubmit, user, roles }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} id={formId}>
-      <TextField
-        fullWidth
-        label="Name"
-        variant="standard"
-        defaultValue={user?.name}
-        error={!!errors.name}
-        helperText={errors.name?.message}
-        sx={{ mt: 2 }}
-        {...register('name', { required: 'This field is required' })}
-      />
-      <TextField
-        fullWidth
-        type="email"
-        label="Email"
-        variant="standard"
-        defaultValue={user?.email}
-        error={!!errors.email}
-        helperText={errors.email?.message}
-        sx={{ mt: 2 }}
-        {...register('email', { required: 'This field is required' })}
-      />
+    <form onSubmit={handleSubmit(onSubmit)}>
+      {children}
+      <Box sx={{ mt: 4, textAlign: 'right' }}>
+        <Button variant="contained" type="submit" size="small">
+          Submit
+        </Button>
+      </Box>
     </form>
   );
 };
 
-export default UserForm;
+export default Form;

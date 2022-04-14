@@ -22,8 +22,6 @@ class UserRequest extends FormRequest {
 				'max:255',
 				// Rule::unique(User::class),
 			],
-			'roles' => ['array'],
-			'roles.*' => ['numeric', 'exists:roles,id'],
 		];
 	}
 }

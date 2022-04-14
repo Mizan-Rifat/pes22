@@ -25,7 +25,7 @@ export const fetchUser = createAsyncThunk('users/fetch_user', async userId => {
 
 export const updateUser = createAsyncThunk(
   'users/update_user',
-  async ({ userId, formData, setError }, { rejectWithValue }) => {
+  async ({ userId, formData }, { rejectWithValue }) => {
     try {
       const user = await axios.put(
         `${process.env.MIX_DOMAIN}/api/users/${userId}`,
@@ -35,15 +35,7 @@ export const updateUser = createAsyncThunk(
       return user;
     } catch (error) {
       toast.error(error.response.data.message);
-      if (error.response.status === 422) {
-        const errors = error.response.data.errors;
-        Object.keys(errors).forEach(error => {
-          setError(error, {
-            type: 'manual',
-            message: errors[error]
-          });
-        });
-      }
+
       return rejectWithValue(error);
     }
   }
