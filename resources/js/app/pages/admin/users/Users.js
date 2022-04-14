@@ -11,9 +11,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import ActionToolbar from 'app/components/common/ActionToolbar';
 import { Add } from '@mui/icons-material';
-import UserDialog from './UserDialog';
 import { useConfirmation } from 'app/providers/ConfirmationProvider';
-import axios from 'axios';
 
 const Users = () => {
   const { users, fetching, loading } = useSelector(state => state.users);
@@ -62,18 +60,22 @@ const Users = () => {
       {
         Header: 'Email',
         accessor: 'email'
+      },
+      {
+        Header: 'Roles',
+        cellProps: {
+          sx: {
+            whiteSpace: 'normal'
+          }
+        },
+        Cell: rowData =>
+          rowData.row.original.roles.map(role => role.name).join(', ')
       }
     ],
     []
   );
 
   useEffect(async () => {
-    // const user = await axios.post('/api/login', {
-    //   email: 'mizan@mail.com',
-    //   password: 'password'
-    // });
-
-    // console.log({ user });
     dispatch(fetchUsers());
   }, []);
 
@@ -102,7 +104,6 @@ const Users = () => {
           bulkActions={bulkActions}
         />
       </Paper>
-      <UserDialog title="Add a new user" type="add" />
     </>
   );
 };

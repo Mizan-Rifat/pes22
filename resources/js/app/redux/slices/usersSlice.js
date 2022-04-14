@@ -14,19 +14,18 @@ export const fetchUsers = createAsyncThunk('users/fetch_users', async () => {
 });
 
 export const fetchUser = createAsyncThunk('users/fetch_user', async userId => {
-  const user = await axios
+  const res = await axios
     .get(`${process.env.MIX_DOMAIN}/api/users/${userId}`)
     .catch(err => {
       console.log([err]);
       return Promise.reject();
     });
-  console.log({ user });
-  return user;
+  return res.data.data;
 });
 
 export const updateUser = createAsyncThunk(
   'users/update_user',
-  async ({ userId, formData, setError }, { rejectWithValue }) => {
+  async ({ userId, formData }, { rejectWithValue }) => {
     try {
       const user = await axios.put(
         `${process.env.MIX_DOMAIN}/api/users/${userId}`,
@@ -36,15 +35,7 @@ export const updateUser = createAsyncThunk(
       return user;
     } catch (error) {
       toast.error(error.response.data.message);
-      if (error.response.status === 422) {
-        const errors = error.response.data.errors;
-        Object.keys(errors).forEach(error => {
-          setError(error, {
-            type: 'manual',
-            message: errors[error]
-          });
-        });
-      }
+
       return rejectWithValue(error);
     }
   }
@@ -69,8 +60,7 @@ export const counterSlice = createSlice({
   initialState: {
     users: [],
     user: {},
-    openDialog: false,
-    fetching: true,
+    fetching: false,
     loading: false
   },
   reducers: {
@@ -93,7 +83,6 @@ export const counterSlice = createSlice({
     builder
       .addCase(fetchUsers.pending, state => {
         state.fetching = true;
-        state.loading = true;
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.users = action.payload.data.data;
@@ -123,12 +112,14 @@ export const counterSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchUser.pending, state => {
-        state.loading = true;
+        state.fetching = true;
       })
-      .addCase(fetchUser.fulfilled, (state, action) => {
-        state.user = action.payload.data.data;
+      .addCase(fetchUser.fulfilled, (state, { payload }) => {
+        state.user = payload;
         state.fetching = false;
-        state.loading = false;
+      })
+      .addCase(fetchUser.rejected, state => {
+        state.fetching = false;
       });
   }
 });

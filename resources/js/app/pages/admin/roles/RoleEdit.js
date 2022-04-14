@@ -47,43 +47,44 @@ const RoleEdit = () => {
       <Box>
         <Paper variant="layout" sx={{ width: '100%', bgcolor: 'transparent' }}>
           <PaperHeader title="Role" color="primary" />
-          <BackdropContainer loading={fetching} hideContent>
-            <BackdropContainer loading={loading}>
-              <ActionToolbar justifyContent="flex-start">
-                {roleId && (
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    startIcon={<EditIcon />}
-                    size="small"
-                    onClick={handleDelete}
-                  >
-                    Delete
-                  </Button>
-                )}
-              </ActionToolbar>
-              <RoleForm
-                formId="roleForm"
-                onFormSubmit={handleSubmit}
-                role={role}
-              />
-              <Box sx={{ mt: 4, textAlign: 'right' }}>
+          <BackdropContainer
+            loading={fetching || loading}
+            hideContent={fetching}
+          >
+            <ActionToolbar justifyContent="flex-start">
+              {roleId && (
                 <Button
-                  variant="contained"
-                  type="submit"
+                  variant="outlined"
+                  color="error"
+                  startIcon={<EditIcon />}
                   size="small"
-                  form="roleForm"
+                  onClick={handleDelete}
                 >
-                  Submit
+                  Delete
                 </Button>
-              </Box>
-              <RolePermission
-                title="Permissions"
-                roleId={roleId}
-                data={role.permissions || []}
-                // loading={loading || fetching}
-              />
-            </BackdropContainer>
+              )}
+            </ActionToolbar>
+            <RoleForm
+              formId="roleForm"
+              onFormSubmit={handleSubmit}
+              role={role}
+            />
+            <Box sx={{ mt: 4, textAlign: 'right' }}>
+              <Button
+                variant="contained"
+                type="submit"
+                size="small"
+                form="roleForm"
+              >
+                Submit
+              </Button>
+            </Box>
+            <RolePermission
+              title="Permissions"
+              roleId={roleId}
+              data={role.permissions || []}
+              // loading={loading || fetching}
+            />
           </BackdropContainer>
         </Paper>
       </Box>

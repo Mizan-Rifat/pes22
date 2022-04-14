@@ -43,7 +43,8 @@ export const addRole = createAsyncThunk(
 
 export const updateUserRoles = createAsyncThunk(
   'roles/update_user_role',
-  async ({ formData, setError }, { rejectWithValue, dispatch }) => {
+  async ({ formData }, { rejectWithValue, dispatch }) => {
+    console.log({ formData });
     try {
       const res = await axios.post(
         `${process.env.MIX_DOMAIN}/api/user/role`,
@@ -54,15 +55,6 @@ export const updateUserRoles = createAsyncThunk(
       toast.success('Successfully updated.');
     } catch (error) {
       toast.error(error.response.data.message);
-      if (error.response.status === 422) {
-        const errors = error.response.data.errors;
-        Object.keys(errors).forEach(error => {
-          setError(error, {
-            type: 'manual',
-            message: errors[error]
-          });
-        });
-      }
       return rejectWithValue(error);
     }
   }
