@@ -1,6 +1,8 @@
 import {
   Checkbox,
   FormControl,
+  FormControlLabel,
+  Grid,
   InputLabel,
   ListItemText,
   MenuItem,
@@ -9,30 +11,39 @@ import {
   TextField
 } from '@mui/material';
 import { updateUser } from 'app/redux/slices/usersSlice';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
-const UserForm = ({ formId, type, roles, permissions }) => {
-  const { user } = useSelector(state => state.users);
+const UserForm = ({ formId, onFormSubmit, user, roles }) => {
   const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
     setError,
-    getFieldState,
-    watch,
+    setValue,
     formState: { errors }
   } = useForm();
 
-  const selectedRoles = watch('roles');
-  const selectedPermissions = watch('permissions');
-
-  console.log({ selectedRoles });
-
   const onSubmit = async data => {
+    if (!Array.isArray(data.roles)) {
+      data.roles = [data.roles];
+    }
     console.log({ data });
-    // await dispatch(updateUser({ userId: user.id, formData: data, setError }));
+    try {
+      await onFormSubmit(data);
+    } catch (error) {
+      console.log({ error });
+      if (error.response.status === 422) {
+        const errors = error.response.data.errors;
+        Object.keys(errors).forEach(error => {
+          setError(error, {
+            type: 'manual',
+            message: errors[error]
+          });
+        });
+      }
+    }
   };
 
   return (
@@ -41,10 +52,10 @@ const UserForm = ({ formId, type, roles, permissions }) => {
         fullWidth
         label="Name"
         variant="standard"
-        defaultValue={type !== 'add' ? user.name : undefined}
+        defaultValue={user?.name}
         error={!!errors.name}
         helperText={errors.name?.message}
-        sx={{ mt: 1 }}
+        sx={{ mt: 2 }}
         {...register('name', { required: 'This field is required' })}
       />
       <TextField
@@ -52,55 +63,12 @@ const UserForm = ({ formId, type, roles, permissions }) => {
         type="email"
         label="Email"
         variant="standard"
-        defaultValue={type !== 'add' ? user.email : undefined}
+        defaultValue={user?.email}
         error={!!errors.email}
         helperText={errors.email?.message}
-        sx={{ mt: 1 }}
+        sx={{ mt: 2 }}
         {...register('email', { required: 'This field is required' })}
       />
-
-      <FormControl variant="standard" fullWidth sx={{ mt: 1 }}>
-        <InputLabel>Roles</InputLabel>
-        <Select
-          multiple
-          defaultValue={user.roles}
-          renderValue={selected => selected.map(item => item.name).join(', ')}
-          {...register('roles', { value: user.roles })}
-        >
-          {roles.map(role => (
-            <MenuItem key={role.name} value={role}>
-              <Checkbox
-                size="small"
-                value={role.id}
-                checked={selectedRoles?.some(item => item.id === role.id)}
-              />
-              <ListItemText primary={role.name} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
-      <FormControl variant="standard" fullWidth sx={{ mt: 1 }}>
-        <InputLabel>Permissions</InputLabel>
-        <Select
-          multiple
-          defaultValue={user.permissions}
-          renderValue={selected => selected.map(item => item.name).join(', ')}
-          {...register('permissions', { value: user.permissions })}
-        >
-          {permissions.map(permission => (
-            <MenuItem key={permission.name} value={permission}>
-              <Checkbox
-                size="small"
-                checked={selectedPermissions?.some(
-                  item => item.id === permission.id
-                )}
-              />
-              <ListItemText primary={permission.name} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
     </form>
   );
 };

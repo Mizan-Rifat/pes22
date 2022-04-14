@@ -14,14 +14,13 @@ export const fetchUsers = createAsyncThunk('users/fetch_users', async () => {
 });
 
 export const fetchUser = createAsyncThunk('users/fetch_user', async userId => {
-  const user = await axios
+  const res = await axios
     .get(`${process.env.MIX_DOMAIN}/api/users/${userId}`)
     .catch(err => {
       console.log([err]);
       return Promise.reject();
     });
-  console.log({ user });
-  return user;
+  return res.data.data;
 });
 
 export const updateUser = createAsyncThunk(
@@ -69,8 +68,7 @@ export const counterSlice = createSlice({
   initialState: {
     users: [],
     user: {},
-    openDialog: false,
-    fetching: true,
+    fetching: false,
     loading: false
   },
   reducers: {
@@ -93,7 +91,6 @@ export const counterSlice = createSlice({
     builder
       .addCase(fetchUsers.pending, state => {
         state.fetching = true;
-        state.loading = true;
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.users = action.payload.data.data;
@@ -123,12 +120,14 @@ export const counterSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchUser.pending, state => {
-        state.loading = true;
+        state.fetching = true;
       })
-      .addCase(fetchUser.fulfilled, (state, action) => {
-        state.user = action.payload.data.data;
+      .addCase(fetchUser.fulfilled, (state, { payload }) => {
+        state.user = payload;
         state.fetching = false;
-        state.loading = false;
+      })
+      .addCase(fetchUser.rejected, state => {
+        state.fetching = false;
       });
   }
 });

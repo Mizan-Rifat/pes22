@@ -11,7 +11,6 @@ import {
 import { useNavigate } from 'react-router-dom';
 import ActionToolbar from 'app/components/common/ActionToolbar';
 import { Add } from '@mui/icons-material';
-import UserDialog from './UserDialog';
 import { useConfirmation } from 'app/providers/ConfirmationProvider';
 import axios from 'axios';
 
@@ -62,6 +61,16 @@ const Users = () => {
       {
         Header: 'Email',
         accessor: 'email'
+      },
+      {
+        Header: 'Roles',
+        cellProps: {
+          sx: {
+            whiteSpace: 'normal'
+          }
+        },
+        Cell: rowData =>
+          rowData.row.original.roles.map(role => role.name).join(', ')
       }
     ],
     []
@@ -102,7 +111,6 @@ const Users = () => {
           bulkActions={bulkActions}
         />
       </Paper>
-      <UserDialog title="Add a new user" type="add" />
     </>
   );
 };

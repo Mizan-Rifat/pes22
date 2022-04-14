@@ -14,8 +14,9 @@ import { ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ConfirmationProvider from './providers/ConfirmationProvider';
 import Permission from './pages/admin/permissions/Permission';
-import Users from './pages/admin/users/users';
-import User from './pages/admin/users/user';
+import Users from './pages/admin/users/Users';
+import User from './pages/admin/users/User';
+import UserEdit from './pages/admin/users/UserEdit';
 import RoleEdit from './pages/admin/roles/RoleEdit';
 import RoleAdd from './pages/admin/roles/RoleAdd';
 import PermissionEdit from './pages/admin/permissions/PermissionEdit';
@@ -37,8 +38,11 @@ const App = () => {
               </Route>
 
               <Route path="admin" element={<AdminLayout />}>
-                <Route path="users" element={<Users />} />
-                <Route path="users/:user" element={<User />} />
+                <Route path="users">
+                  <Route index element={<Users />} />
+                  <Route path=":user" element={<User />} />
+                  <Route path=":user/edit" element={<UserEdit />} />
+                </Route>
                 <Route path="roles">
                   <Route index element={<Roles />} />
                   <Route path=":role/edit" element={<RoleEdit />} />
