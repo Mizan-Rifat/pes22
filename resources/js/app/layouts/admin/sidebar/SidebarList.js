@@ -11,12 +11,19 @@ const SidebarList = () => {
         <List
           key={route.title}
           component="nav"
+          // subheader={
+          //   route.title ? (
+          //     <Divider textAlign="left">
+          //       <ListSubheader component="div">{route.title}</ListSubheader>
+          //     </Divider>
+          //   ) : (
+          //     <Divider />
+          //   )
+          // }
           subheader={
-            route.title && (
-              <Divider textAlign="left">
-                <ListSubheader component="div">{route.title}</ListSubheader>
-              </Divider>
-            )
+            <Divider textAlign="left">
+              <ListSubheader component="div">{route.title}</ListSubheader>
+            </Divider>
           }
         >
           {route.routes.map(singleRoute => (

@@ -31,5 +31,17 @@ export const authorizationRoutes = {
     }
   ]
 };
+export const mainRoutes = {
+  title: 'Main',
+  routes: [
+    {
+      title: 'Clubs',
+      path: 'clubs',
+      icon: <KeyIcon />,
+      name: 'clubs'
+      // element: <Users />
+    }
+  ]
+};
 
-export default [authorizationRoutes];
+export default [authorizationRoutes, mainRoutes];

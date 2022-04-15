@@ -21,6 +21,9 @@ import RoleEdit from './pages/admin/roles/RoleEdit';
 import RoleAdd from './pages/admin/roles/RoleAdd';
 import PermissionEdit from './pages/admin/permissions/PermissionEdit';
 import PermissionAdd from './pages/admin/permissions/PermissionAdd';
+import Clubs from './pages/admin/clubs/Clubs';
+import Club from './pages/admin/clubs/Club';
+import ClubEdit from './pages/admin/clubs/ClubEdit';
 
 const App = () => {
   console.log({ theme });
@@ -53,6 +56,12 @@ const App = () => {
                   <Route index element={<Permissions />} />
                   <Route path=":permission/edit" element={<PermissionEdit />} />
                   <Route path=":permission" element={<Permission />} />
+                  <Route path="create" element={<PermissionAdd />} />
+                </Route>
+                <Route path="clubs">
+                  <Route index element={<Clubs />} />
+                  <Route path=":club" element={<Club />} />
+                  <Route path=":club/edit" element={<ClubEdit />} />
                   <Route path="create" element={<PermissionAdd />} />
                 </Route>
               </Route>

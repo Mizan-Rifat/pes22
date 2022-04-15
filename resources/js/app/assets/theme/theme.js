@@ -293,6 +293,14 @@ theme = createTheme(theme, {
           }
         }
       }
+    },
+    MuiFormControlLabel: {
+      styleOverrides: {
+        label: {
+          fontWeight: 400,
+          color: theme.palette.grey[600]
+        }
+      }
     }
     // MuiListItemText: {
     //   defaultProps: {

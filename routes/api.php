@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClubController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
@@ -8,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,15 +27,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/test', function () {
-	// return User::with('roles')->get();
-	$user = User::find(1);
-	$user->load('roles');
-	return $user->roles;
+	// return asset('/images/club_logo/');
+	Storage::disk('public')->put('example.txt', 'Contents');
+	// return asset('storage/file.txt');
 });
 
 Route::resource('permissions', PermissionController::class, ['except' => ['create', 'edit']]);
 Route::resource('roles', RoleController::class, ['except' => ['create', 'edit']]);
 Route::resource('users', UserController::class, ['except' => ['create', 'edit']]);
+Route::resource('clubs', ClubController::class, ['except' => ['create', 'edit']]);
 
 
 Route::get('user/{user}/permission', [RolePermissionController::class, 'getAllPermissionsOfUser']);
