@@ -5,6 +5,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\UserController;
+use App\Models\Club;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/test', function () {
-	return [filter_var('falssse', FILTER_VALIDATE_BOOL)];
+	$user = Club::find(2);
+	return $user->owner;
 });
 
 Route::resource('permissions', PermissionController::class, ['except' => ['create', 'edit']]);

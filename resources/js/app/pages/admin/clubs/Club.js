@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useConfirmation } from 'app/providers/ConfirmationProvider';
 import ShowLayout from 'app/layouts/admin/ShowLayout';
 import { deleteClub, fetchClub } from 'app/redux/slices/clubsSlice';
@@ -31,6 +31,8 @@ const Club = () => {
     dispatch(fetchClub(clubId));
   }, []);
 
+  console.log({ club });
+
   useEffect(() => {
     const data = [
       {
@@ -45,6 +47,17 @@ const Club = () => {
             <img src={club.logo} alt="" width={25} />
             <p style={{ margin: 0, marginLeft: 12 }}>{club.name}</p>
           </Box>
+        )
+      },
+      {
+        label: 'Owner',
+        render: (
+          <Link
+            style={{ textDecoration: 'none' }}
+            to={`/admin/users/${club?.owner?.id}`}
+          >
+            {club?.owner?.name}
+          </Link>
         )
       },
       {

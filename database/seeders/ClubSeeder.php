@@ -66,7 +66,7 @@ class ClubSeeder extends Seeder {
 			[
 				"id" => 9,
 				"name" => "VILLAREAL",
-				"logo" => "9.png",
+				"logo" => "5.png",
 				"owner_id" => 9
 			],
 			[
@@ -262,7 +262,7 @@ class ClubSeeder extends Seeder {
 				'name' => $club['name'],
 				'slug' => strtolower(str_replace(' ', '', $club['name'])),
 				'logo' => 'club_logo/' . $club['logo'],
-				'owner' => $club['owner_id'],
+				'owner_id' => $club['owner_id'],
 				'created_at' => Carbon::now(),
 			]);
 		}

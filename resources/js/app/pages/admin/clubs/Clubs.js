@@ -6,7 +6,7 @@ import PaperHeader from 'app/components/paper/PaperHeader';
 import Table from 'app/components/table/Table';
 import { deleteClub, fetchClubs } from 'app/redux/slices/clubsSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useConfirmation } from 'app/providers/ConfirmationProvider';
 import dayjs from 'dayjs';
 
@@ -60,6 +60,18 @@ const Clubs = () => {
               {rowData.row.original.name}
             </p>
           </Box>
+        )
+      },
+      {
+        Header: 'Owner',
+        accessor: 'owner.name',
+        Cell: rowData => (
+          <Link
+            style={{ textDecoration: 'none' }}
+            to={`/admin/users/${rowData.row.original.owner?.id}`}
+          >
+            {rowData.row.original.owner?.name}
+          </Link>
         )
       },
       {
