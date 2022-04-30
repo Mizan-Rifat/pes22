@@ -40,6 +40,13 @@ export const mainRoutes = {
       icon: <KeyIcon />,
       name: 'clubs'
       // element: <Users />
+    },
+    {
+      title: 'Tournaments',
+      path: 'tournaments',
+      icon: <KeyIcon />,
+      name: 'tournaments'
+      // element: <Users />
     }
   ]
 };

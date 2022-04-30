@@ -4,6 +4,7 @@ use App\Http\Controllers\ClubController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\UserController;
 use App\Models\Club;
 use App\Models\User;
@@ -37,6 +38,7 @@ Route::resource('roles', RoleController::class, ['except' => ['create', 'edit']]
 Route::resource('users', UserController::class, ['except' => ['create', 'edit']]);
 Route::resource('clubs', ClubController::class, ['except' => ['create', 'edit', 'update', 'store']]);
 Route::post('clubs/{club}', [ClubController::class, 'update']);
+Route::resource('tournaments', TournamentController::class, ['except' => ['create', 'edit']]);
 
 
 Route::get('user/{user}/permission', [RolePermissionController::class, 'getAllPermissionsOfUser']);

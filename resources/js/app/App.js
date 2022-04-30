@@ -24,6 +24,10 @@ import PermissionAdd from './pages/admin/permissions/PermissionAdd';
 import Clubs from './pages/admin/clubs/Clubs';
 import Club from './pages/admin/clubs/Club';
 import ClubEdit from './pages/admin/clubs/ClubEdit';
+import Tournaments from './pages/admin/tournaments/Tournaments';
+import Tournament from './pages/admin/tournaments/Tournament';
+import TournamentAdd from './pages/admin/tournaments/TournamentAdd';
+import TournamentEdit from './pages/admin/tournaments/TournamentEdit';
 
 const App = () => {
   console.log({ theme });
@@ -63,6 +67,12 @@ const App = () => {
                   <Route path=":club" element={<Club />} />
                   <Route path=":club/edit" element={<ClubEdit />} />
                   <Route path="create" element={<PermissionAdd />} />
+                </Route>
+                <Route path="tournaments">
+                  <Route index element={<Tournaments />} />
+                  <Route path=":tournament" element={<Tournament />} />
+                  <Route path=":tournament/edit" element={<TournamentEdit />} />
+                  <Route path="create" element={<TournamentAdd />} />
                 </Route>
               </Route>
             </Routes>
