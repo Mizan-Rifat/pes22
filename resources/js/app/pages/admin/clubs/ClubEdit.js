@@ -45,17 +45,7 @@ const ClubEdit = () => {
             loading={fetching || loading}
             hideContent={fetching}
           >
-            <ActionToolbar justifyContent="flex-start">
-              <Button
-                variant="outlined"
-                color="error"
-                startIcon={<EditIcon />}
-                size="small"
-                onClick={handleDelete}
-              >
-                Delete
-              </Button>
-            </ActionToolbar>
+            <ActionToolbar justifyContent="flex-start" />
             <ClubForm club={club} />
           </BackdropContainer>
         </Paper>

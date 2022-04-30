@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Add } from '@mui/icons-material';
-import { Button, Paper } from '@mui/material';
+import { Box, Button, Paper } from '@mui/material';
 import ActionToolbar from 'app/components/common/ActionToolbar';
 import PaperHeader from 'app/components/paper/PaperHeader';
 import Table from 'app/components/table/Table';
-import { fetchClubs } from 'app/redux/slices/clubsSlice';
+import { deleteClub, fetchClubs } from 'app/redux/slices/clubsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useConfirmation } from 'app/providers/ConfirmationProvider';
@@ -22,17 +22,17 @@ const Clubs = () => {
       handler: id => {
         navigate(`${id}`);
       }
+    },
+    {
+      title: 'Delete',
+      handler: async id => {
+        console.log('Delete', id);
+        await confirm({
+          variant: 'error'
+        });
+        await dispatch(deleteClub(id)).unwrap();
+      }
     }
-    // {
-    //   title: 'Delete',
-    //   handler: async id => {
-    //     console.log('Delete', id);
-    //     await confirm({
-    //       variant: 'error'
-    //     });
-    //     await dispatch(deleteUser(id)).unwrap();
-    //   }
-    // }
   ];
 
   const bulkActions = {
@@ -52,7 +52,15 @@ const Clubs = () => {
       // },
       {
         Header: 'Name',
-        accessor: 'name'
+        accessor: 'name',
+        Cell: rowData => (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <img src={rowData.row.original.logo} alt="" width={25} />
+            <p style={{ margin: 0, marginLeft: 12 }}>
+              {rowData.row.original.name}
+            </p>
+          </Box>
+        )
       },
       {
         Header: 'Slug',

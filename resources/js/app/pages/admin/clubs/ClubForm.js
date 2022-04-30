@@ -1,36 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Badge,
   Box,
   Button,
   FormControlLabel,
   FormLabel,
-  Grid,
   Switch,
   TextField
 } from '@mui/material';
-import { updateUser } from 'app/redux/slices/usersSlice';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import Upload from '@mui/icons-material/Upload';
+import { updateClub } from 'app/redux/slices/clubsSlice';
 
 const ClubForm = ({ club }) => {
-  console.log({ club });
+  const [logo, setLogo] = useState(null);
   const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
-    watch,
     setError,
     formState: { errors }
   } = useForm();
 
-  const logo = watch('logo');
+  const handleFileChange = e => {
+    setLogo(e.target.files[0]);
+  };
 
-  console.log({ logo });
   const onSubmit = async data => {
+    const formData = new FormData();
+    if (logo) {
+      formData.append('logo', logo);
+    }
+    formData.append('name', data.name);
+    formData.append('approved', data.approved);
     try {
-      // await dispatch(updateUser({ clubId: club.id, formData: data })).unwrap();
-      console.log({ data });
+      await dispatch(updateClub({ clubId: club.id, formData })).unwrap();
     } catch (error) {
       console.log({ error });
       if (error.response.status === 422) {
@@ -51,23 +56,13 @@ const ClubForm = ({ club }) => {
         fullWidth
         label="Name"
         variant="standard"
-        // defaultValue={club?.name}
+        defaultValue={club?.name}
         error={!!errors.name}
         helperText={errors.name?.message}
-        sx={{ mt: 2 }}
+        sx={{ mt: 3 }}
         {...register('name', { required: 'This field is required' })}
       />
 
-      <TextField
-        fullWidth
-        label="Slug"
-        variant="standard"
-        defaultValue={club?.slug}
-        error={!!errors.slug}
-        helperText={errors.slug?.message}
-        sx={{ mt: 2 }}
-        {...register('slug', { required: 'This field is required' })}
-      />
       <FormControlLabel
         control={
           <Switch
@@ -78,51 +73,53 @@ const ClubForm = ({ club }) => {
         }
         label="Approved : "
         labelPlacement="start"
-        sx={{ mt: 2, ml: 0 }}
+        sx={{ mt: 1.5, ml: 0 }}
       />
-      <Grid container spacing={2}>
-        <Grid item xs="auto">
-          <FormLabel>Logo:</FormLabel>
-        </Grid>
-        <Grid item xs="auto">
-          <Box
-            sx={{
-              height: 100,
-              width: 150,
-              border: theme => `1px solid ${theme.palette.grey[400]}`,
-              display: 'block'
-            }}
-          >
-            <Badge
-              color="error"
-              badgeContent="x"
-              sx={{
-                height: 100,
-                width: 150
-                // border: theme => `1px solid ${theme.palette.grey[400]}`,
-                // display: 'block'
-              }}
-            >
-              <img
-                src="http://localhost:8000/images/sidebar.jpg"
-                alt=""
-                width="100%"
-                height="100%"
-                style={{ objectFit: 'contain', display: 'block' }}
-              />
-            </Badge>
-          </Box>
+
+      <Box sx={{ display: 'flex', mt: 1.5 }}>
+        <FormLabel sx={{ mr: 2 }}>Logo :</FormLabel>
+        <div>
           <Button
             variant="contained"
             component="label"
             size="small"
-            sx={{ mt: 2 }}
+            startIcon={<Upload />}
+            sx={{ mb: 2 }}
           >
-            Upload File
-            <input type="file" hidden {...register('logo')} />
+            Upload image
+            <input type="file" hidden onChange={handleFileChange} />
           </Button>
-        </Grid>
-      </Grid>
+          {logo && (
+            <Box
+              sx={{
+                height: 100,
+                width: 150,
+                border: theme => `1px solid ${theme.palette.grey[400]}`,
+                display: 'block'
+              }}
+            >
+              <Badge
+                color="error"
+                badgeContent="x"
+                onClick={() => setLogo(null)}
+                sx={{
+                  height: 100,
+                  width: 150,
+                  cursor: 'pointer'
+                }}
+              >
+                <img
+                  src={URL.createObjectURL(logo)}
+                  alt=""
+                  width="100%"
+                  height="100%"
+                  style={{ objectFit: 'contain', display: 'block' }}
+                />
+              </Badge>
+            </Box>
+          )}
+        </div>
+      </Box>
       <Box sx={{ mt: 4, textAlign: 'right' }}>
         <Button variant="contained" type="submit" size="small">
           Submit

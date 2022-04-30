@@ -11,7 +11,7 @@ class ClubResource extends JsonResource {
 			'id' => $this->id,
 			'name' => $this->name,
 			'slug' => $this->slug,
-			'logo' => asset('/images/club_logo/' . $this->logo),
+			'logo' => asset('/storage/images/' . $this->logo),
 			'establishedIn' => $this->created_at,
 			'owner' => new UserResource($this->whenLoaded('owner')),
 			'approved' => (bool) $this->approved,

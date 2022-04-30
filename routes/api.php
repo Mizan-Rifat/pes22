@@ -27,15 +27,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/test', function () {
-	// return asset('/images/club_logo/');
-	Storage::disk('public')->put('example.txt', 'Contents');
-	// return asset('storage/file.txt');
+	return [filter_var('falssse', FILTER_VALIDATE_BOOL)];
 });
 
 Route::resource('permissions', PermissionController::class, ['except' => ['create', 'edit']]);
 Route::resource('roles', RoleController::class, ['except' => ['create', 'edit']]);
 Route::resource('users', UserController::class, ['except' => ['create', 'edit']]);
-Route::resource('clubs', ClubController::class, ['except' => ['create', 'edit']]);
+Route::resource('clubs', ClubController::class, ['except' => ['create', 'edit', 'update', 'store']]);
+Route::post('clubs/{club}', [ClubController::class, 'update']);
 
 
 Route::get('user/{user}/permission', [RolePermissionController::class, 'getAllPermissionsOfUser']);

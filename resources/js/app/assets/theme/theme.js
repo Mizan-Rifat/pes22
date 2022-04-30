@@ -294,6 +294,14 @@ theme = createTheme(theme, {
         }
       }
     },
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          fontWeight: 400,
+          color: theme.palette.grey[600]
+        }
+      }
+    },
     MuiFormControlLabel: {
       styleOverrides: {
         label: {

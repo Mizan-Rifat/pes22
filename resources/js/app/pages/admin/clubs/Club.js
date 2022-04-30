@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useConfirmation } from 'app/providers/ConfirmationProvider';
 import ShowLayout from 'app/layouts/admin/ShowLayout';
-import { fetchClub } from 'app/redux/slices/clubsSlice';
+import { deleteClub, fetchClub } from 'app/redux/slices/clubsSlice';
 import dayjs from 'dayjs';
+import { Box } from '@mui/material';
 
 const Club = () => {
   const { club: clubId } = useParams();
@@ -21,8 +22,9 @@ const Club = () => {
     await confirm({
       variant: 'error'
     });
-    // await dispatch(deletePermission(club.id)).unwrap();
-    // navigate(`/admin/permissions`);
+    console.log('fsdf');
+    await dispatch(deleteClub(club.id)).unwrap();
+    navigate(`/admin/clubs`);
   };
 
   useEffect(() => {
@@ -37,7 +39,13 @@ const Club = () => {
       },
       {
         label: 'Club',
-        value: club.name
+        value: club.name,
+        render: (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <img src={club.logo} alt="" width={25} />
+            <p style={{ margin: 0, marginLeft: 12 }}>{club.name}</p>
+          </Box>
+        )
       },
       {
         label: 'Slug',
@@ -57,12 +65,14 @@ const Club = () => {
   }, [club]);
 
   return (
-    <ShowLayout
-      title="Club"
-      data={data}
-      handleDelete={handleDelete}
-      backLink="/admin/clubs"
-    />
+    <>
+      <ShowLayout
+        title="Club"
+        data={data}
+        handleDelete={handleDelete}
+        backLink="/admin/clubs"
+      />
+    </>
   );
 };
 

@@ -261,7 +261,7 @@ class ClubSeeder extends Seeder {
 			DB::table('clubs')->insert([
 				'name' => $club['name'],
 				'slug' => strtolower(str_replace(' ', '', $club['name'])),
-				'logo' => $club['logo'],
+				'logo' => 'club_logo/' . $club['logo'],
 				'owner' => $club['owner_id'],
 				'created_at' => Carbon::now(),
 			]);
