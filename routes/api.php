@@ -7,6 +7,7 @@ use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\UserController;
 use App\Models\Club;
+use App\Models\Tournament;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,8 +30,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/test', function () {
-	$user = Club::find(2);
-	return $user->owner;
+	$user = Tournament::find(1);
+	return $user->clubs;
 });
 
 Route::resource('permissions', PermissionController::class, ['except' => ['create', 'edit']]);
@@ -39,6 +40,7 @@ Route::resource('users', UserController::class, ['except' => ['create', 'edit']]
 Route::resource('clubs', ClubController::class, ['except' => ['create', 'edit', 'update', 'store']]);
 Route::post('clubs/{club}', [ClubController::class, 'update']);
 Route::resource('tournaments', TournamentController::class, ['except' => ['create', 'edit']]);
+Route::post('tournaments/{tournament}/updateclubs', [TournamentController::class, 'updateClubs']);
 
 
 Route::get('user/{user}/permission', [RolePermissionController::class, 'getAllPermissionsOfUser']);

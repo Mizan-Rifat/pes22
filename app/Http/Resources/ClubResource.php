@@ -13,9 +13,9 @@ class ClubResource extends JsonResource {
 			'slug' => $this->slug,
 			'logo' => asset('/storage/images/' . $this->logo),
 			'establishedIn' => $this->created_at,
-			// 'owner' => new UserResource($this->whenLoaded('owner')),
-			'owner' => new UserResource($this->owner),
+			'owner' => new UserResource($this->whenLoaded('owner')),
 			'approved' => (bool) $this->approved,
+			'tournaments' => TournamentResource::collection($this->whenLoaded('tournaments')),
 		];
 	}
 }

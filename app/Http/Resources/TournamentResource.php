@@ -20,6 +20,7 @@ class TournamentResource extends JsonResource {
 			'rounds' => $this->rounds,
 			'leg' => $this->leg,
 			'active' => (bool) $this->active,
+			'clubs' => ClubResource::collection($this->whenLoaded('clubs'))
 		];
 	}
 }

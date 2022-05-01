@@ -84,6 +84,23 @@ export const deleteTournament = createAsyncThunk(
   }
 );
 
+export const updateTournamentClubs = createAsyncThunk(
+  'tournaments/update_tournament_clubs',
+  async ({ formData, tournamentId }, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(
+        `${process.env.MIX_DOMAIN}/api/tournaments/${tournamentId}/updateclubs`,
+        formData
+      );
+      toast.success(res.data.message);
+      return res.data.data;
+    } catch (error) {
+      toast.error(error.response.data.message);
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const tournamentsSlice = createSlice({
   name: 'tournaments',
   initialState: {
@@ -149,6 +166,17 @@ export const tournamentsSlice = createSlice({
         state.loading = false;
       })
       .addCase(deleteTournament.rejected, state => {
+        state.loading = false;
+      })
+
+      .addCase(updateTournamentClubs.pending, state => {
+        state.loading = true;
+      })
+      .addCase(updateTournamentClubs.fulfilled, (state, { payload }) => {
+        state.tournament = payload;
+        state.loading = false;
+      })
+      .addCase(updateTournamentClubs.rejected, state => {
         state.loading = false;
       });
   }

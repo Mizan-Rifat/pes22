@@ -71,6 +71,23 @@ const Club = () => {
       {
         label: 'Approved',
         value: club.approved ? 'Yes' : 'No'
+      },
+      {
+        label: 'Tournaments',
+        render: (
+          <ul style={{ padding: '0 16px', margin: 0 }}>
+            {club.tournaments?.map(tournament => (
+              <li>
+                <Link
+                  to={`/admin/tournaments/${tournament.id}`}
+                  style={{ textDecoration: 'none' }}
+                >
+                  {tournament.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )
       }
     ];
 

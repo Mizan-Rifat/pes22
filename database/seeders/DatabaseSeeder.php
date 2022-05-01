@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder {
 			// PermissionSeeder::class,
 			// RoleSeeder::class,
 			// ClubSeeder::class,
-			TournamentSeeder::class,
+			// TournamentSeeder::class,
+			ClubTournamentSeeder::class,
 		]);
 	}
 }

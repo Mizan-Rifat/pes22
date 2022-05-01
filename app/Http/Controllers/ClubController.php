@@ -18,7 +18,7 @@ class ClubController extends Controller {
 	}
 
 	public function show(Club $club) {
-		$club->load('owner');
+		$club->load('owner', 'tournaments');
 		return new ClubResource($club);
 	}
 

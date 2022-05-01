@@ -13,4 +13,8 @@ class Club extends Model {
 	public function owner() {
 		return $this->belongsTo(User::class, 'owner_id', 'id');
 	}
+
+	public function tournaments() {
+		return $this->belongsToMany(Tournament::class);
+	}
 }

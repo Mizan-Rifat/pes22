@@ -13,7 +13,8 @@ const ShowLayout = ({
   handleDelete,
   backLink,
   editLink = 'edit',
-  fullColumn = true
+  fullColumn = true,
+  actions
 }) => {
   const navigate = useNavigate();
 
@@ -24,6 +25,7 @@ const ShowLayout = ({
       <Paper variant="layout" sx={{ width: '100%', bgcolor: 'transparent' }}>
         <PaperHeader title={title} color="primary" />
         <ActionToolbar justifyContent="flex-start">
+          {actions}
           <Button
             variant="outlined"
             startIcon={<EditIcon />}

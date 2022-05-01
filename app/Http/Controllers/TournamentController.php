@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TournamentRequest;
 use App\Http\Resources\TournamentResource;
+use App\Models\Club;
 use App\Models\Tournament;
+use Illuminate\Http\Request;
 
 class TournamentController extends Controller {
 
@@ -25,6 +27,7 @@ class TournamentController extends Controller {
 
 
 	public function show(Tournament $tournament) {
+		$tournament->load('clubs');
 		return new TournamentResource($tournament);
 	}
 
@@ -40,5 +43,19 @@ class TournamentController extends Controller {
 
 	public function destroy(Tournament $tournament) {
 		return $tournament->delete();
+	}
+
+	public function updateClubs(Request $request, Tournament $tournament) {
+		$validatedData = $request->validate([
+			'clubs' => ['required', 'array'],
+			'clubs.*' => ['numeric', 'exists:clubs,id'],
+		]);
+		$tournament->clubs()->sync($validatedData['clubs']);
+		$tournament->load('clubs');
+
+		return response()->json([
+			'message' => 'Successfully updated',
+			'data' => new TournamentResource($tournament)
+		], 200);
 	}
 }
