@@ -25,7 +25,7 @@ const Tournaments = () => {
     {
       title: 'View',
       handler: id => {
-        navigate(`${id}`);
+        navigate(`${id}/details`);
       }
     },
     {

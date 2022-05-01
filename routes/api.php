@@ -30,8 +30,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/test', function () {
-	$user = Tournament::find(1);
-	return $user->clubs;
+	return [request()->has('clubs')];
 });
 
 Route::resource('permissions', PermissionController::class, ['except' => ['create', 'edit']]);

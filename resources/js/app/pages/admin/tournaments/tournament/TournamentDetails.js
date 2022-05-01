@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useConfirmation } from 'app/providers/ConfirmationProvider';
 import ShowLayout from 'app/layouts/admin/ShowLayout';
 import {
@@ -8,34 +8,24 @@ import {
   fetchTournament
 } from 'app/redux/slices/tournamentSlice';
 import { snakeCaseToTitleCase } from 'app/config/utils';
-import { Button } from '@mui/material';
-import { Add } from '@mui/icons-material';
+import { Button, Grid, Paper } from '@mui/material';
+import { Add, Delete } from '@mui/icons-material';
 import UpdateClubsDialog from './UpdateClubsDialog';
 import { fetchClubs } from 'app/redux/slices/clubsSlice';
+import BackToLIstButton from 'app/components/common/BackToLIstButton';
+import PaperHeader from 'app/components/paper/PaperHeader';
+import ActionToolbar from 'app/components/common/ActionToolbar';
+import Edit from '@mui/icons-material/Edit';
+import DetailsGrid from 'app/components/common/DetailsGrid';
+import TournamentSidebar from './TournamentSidebar';
 
-const Tournament = () => {
-  const { tournament: tournamentId } = useParams();
-
+const TournamentDetails = () => {
   const { tournament } = useSelector(state => state.tournaments);
-  const confirm = useConfirmation();
 
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
 
-  const [openDialog, setOpenDialog] = useState(false);
-
-  const navigate = useNavigate();
-
-  const handleDelete = async () => {
-    await confirm({
-      variant: 'error'
-    });
-    await dispatch(deleteTournament(tournament.id)).unwrap();
-    navigate(`/admin/tournaments`);
-  };
-
   useEffect(() => {
-    dispatch(fetchTournament(tournamentId));
     dispatch(fetchClubs());
   }, []);
 
@@ -91,30 +81,11 @@ const Tournament = () => {
     setData(data);
   }, [tournament]);
 
-  const actions = (
-    <Button
-      variant="contained"
-      color="primary"
-      size="small"
-      onClick={() => setOpenDialog(true)}
-    >
-      Update Clubs
-    </Button>
-  );
-
   return (
     <>
-      <ShowLayout
-        title="Tournament"
-        data={data}
-        handleDelete={handleDelete}
-        backLink="/admin/tournaments"
-        actions={actions}
-      />
-
-      <UpdateClubsDialog open={openDialog} setOpen={setOpenDialog} />
+      <DetailsGrid data={data} fullColumn={true} />
     </>
   );
 };
 
-export default Tournament;
+export default TournamentDetails;

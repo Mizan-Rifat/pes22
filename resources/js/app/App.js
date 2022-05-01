@@ -3,7 +3,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from 'assets/theme/theme';
 import { CssBaseline } from '@mui/material';
 import AdminLayout from './layouts/admin/AdminLayout';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './layouts/main/MainLayout';
 import Home from './layouts/main/Home';
 import Test from './layouts/main/Test';
@@ -25,9 +25,13 @@ import Clubs from './pages/admin/clubs/Clubs';
 import Club from './pages/admin/clubs/Club';
 import ClubEdit from './pages/admin/clubs/ClubEdit';
 import Tournaments from './pages/admin/tournaments/Tournaments';
-import Tournament from './pages/admin/tournaments/Tournament';
+import Tournament from './pages/admin/tournaments/tournament/Tournament';
 import TournamentAdd from './pages/admin/tournaments/TournamentAdd';
 import TournamentEdit from './pages/admin/tournaments/TournamentEdit';
+import TournamentDetails from './pages/admin/tournaments/tournament/TournamentDetails';
+import TournamentFixtures from './pages/admin/tournaments/tournament/TournamentFixtures';
+import TournamentResults from './pages/admin/tournaments/tournament/TournamentResults';
+import TournamentOfficials from './pages/admin/tournaments/tournament/TournamentOfficials';
 
 const App = () => {
   console.log({ theme });
@@ -70,7 +74,14 @@ const App = () => {
                 </Route>
                 <Route path="tournaments">
                   <Route index element={<Tournaments />} />
-                  <Route path=":tournament" element={<Tournament />} />
+                  <Route path=":tournament" element={<Tournament />}>
+                    <Route index element={<TournamentDetails />} />
+                    <Route path="details" element={<TournamentDetails />} />
+                    <Route path="fixtures" element={<TournamentFixtures />} />
+                    <Route path="results" element={<TournamentResults />} />
+                    <Route path="officials" element={<TournamentOfficials />} />
+                  </Route>
+                  {/* <Route path=":tournament" element={<Tournament />} /> */}
                   <Route path=":tournament/edit" element={<TournamentEdit />} />
                   <Route path="create" element={<TournamentAdd />} />
                 </Route>
