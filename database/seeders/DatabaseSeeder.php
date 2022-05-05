@@ -19,7 +19,9 @@ class DatabaseSeeder extends Seeder {
 			// RoleSeeder::class,
 			// ClubSeeder::class,
 			// TournamentSeeder::class,
-			ClubTournamentSeeder::class,
+			// ClubTournamentSeeder::class,
+			PlayerModelSeeder::class,
+			// PlayerPositionSeeder::class,
 		]);
 	}
 }

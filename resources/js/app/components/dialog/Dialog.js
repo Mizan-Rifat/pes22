@@ -18,6 +18,7 @@ const Dialog = ({
   variant = 'primary',
   onSubmit,
   onCancel,
+  maxWidth = 'sm',
   cancelBtn = true,
   cancelBtnText = 'CANCEL',
   submitBtnText = 'OK',
@@ -28,7 +29,7 @@ const Dialog = ({
       open={open}
       TransitionComponent={Transition}
       fullWidth
-      maxWidth="md"
+      maxWidth={maxWidth}
     >
       <DialogTitle
         sx={{ bgcolor: `${variant}.main`, color: 'common.white', py: 1 }}

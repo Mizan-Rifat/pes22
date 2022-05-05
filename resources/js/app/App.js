@@ -32,6 +32,9 @@ import TournamentDetails from './pages/admin/tournaments/tournament/TournamentDe
 import TournamentFixtures from './pages/admin/tournaments/tournament/TournamentFixtures';
 import TournamentResults from './pages/admin/tournaments/tournament/TournamentResults';
 import TournamentOfficials from './pages/admin/tournaments/tournament/TournamentOfficials';
+import PlayerModels from './pages/admin/player-models/PlayerModels';
+import PlayerModel from './pages/admin/player-models/PlayerModel';
+import PlayerModelEdit from './pages/admin/player-models/PlayerModelEdit';
 
 const App = () => {
   console.log({ theme });
@@ -70,6 +73,15 @@ const App = () => {
                   <Route index element={<Clubs />} />
                   <Route path=":club" element={<Club />} />
                   <Route path=":club/edit" element={<ClubEdit />} />
+                  <Route path="create" element={<PermissionAdd />} />
+                </Route>
+                <Route path="player-models">
+                  <Route index element={<PlayerModels />} />
+                  <Route path=":playerModel" element={<PlayerModel />} />
+                  <Route
+                    path=":playerModel/edit"
+                    element={<PlayerModelEdit />}
+                  />
                   <Route path="create" element={<PermissionAdd />} />
                 </Route>
                 <Route path="tournaments">

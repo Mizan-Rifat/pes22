@@ -35,6 +35,13 @@ export const mainRoutes = {
   title: 'Main',
   routes: [
     {
+      title: 'Player Models',
+      path: 'player-models',
+      icon: <KeyIcon />,
+      name: 'playerModels'
+      // element: <Users />
+    },
+    {
       title: 'Clubs',
       path: 'clubs',
       icon: <KeyIcon />,

@@ -4,6 +4,7 @@ import permissionsReducer from './slices/permissionsSlice';
 import rolesReducer from './slices/rolesSlice';
 import usersReducer from './slices/usersSlice';
 import tournamentsReducer from './slices/tournamentSlice';
+import playerModelsReducer from './slices/playerModelsSlice';
 
 export default configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export default configureStore({
     permissions: permissionsReducer,
     users: usersReducer,
     clubs: clubsReducer,
-    tournaments: tournamentsReducer
+    tournaments: tournamentsReducer,
+    playerModels: playerModelsReducer
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

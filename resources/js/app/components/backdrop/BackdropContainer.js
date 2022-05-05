@@ -1,10 +1,15 @@
 import { Backdrop, Box, CircularProgress } from '@mui/material';
 import React from 'react';
 
-const BackdropContainer = ({ children, loading = false, hideContent }) => {
+const BackdropContainer = ({ children, sx, loading = false, hideContent }) => {
   return (
     <Box
-      sx={{ position: 'relative', opacity: loading ? 0.5 : 1, minHeight: 200 }}
+      sx={{
+        position: 'relative',
+        opacity: loading ? 0.5 : 1,
+        minHeight: 200,
+        ...sx
+      }}
     >
       {hideContent ? !loading && children : children}
       <Backdrop

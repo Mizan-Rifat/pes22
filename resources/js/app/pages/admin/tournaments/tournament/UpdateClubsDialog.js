@@ -32,6 +32,7 @@ const UpdateClubsDialog = ({ open, setOpen }) => {
       title="Update clubs"
       onSubmit={handleSubmit(onSubmit)}
       submitBtnText="Update"
+      maxWidth="md"
     >
       <BackdropContainer loading={fetching || loading} hideContent={fetching}>
         <Grid container spacing={3}>
