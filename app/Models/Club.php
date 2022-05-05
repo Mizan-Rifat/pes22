@@ -11,10 +11,14 @@ class Club extends Model {
 	protected $guarded = [];
 
 	public function owner() {
-		return $this->belongsTo(User::class, 'owner_id', 'id');
+		return $this->belongsTo(User::class, 'owner_id', 'id',);
 	}
 
 	public function tournaments() {
 		return $this->belongsToMany(Tournament::class);
+	}
+
+	public function fixtures() {
+		return $this->hasManyThrough(Fixture::class, Tournament::class,);
 	}
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\UserController;
 use App\Models\Club;
+use App\Models\Fixture;
 use App\Models\PlayerModel;
 use App\Models\Tournament;
 use App\Models\User;
@@ -32,7 +33,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/test', function () {
-	return PlayerModel::find(1);
+	return Club::with('fixtures')->get();
 });
 
 Route::resource('permissions', PermissionController::class, ['except' => ['create', 'edit']]);

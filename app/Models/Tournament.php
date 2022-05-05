@@ -12,4 +12,8 @@ class Tournament extends Model {
 	public function clubs() {
 		return $this->belongsToMany(Club::class);
 	}
+
+	public function fixtures() {
+		return $this->hasMany(Fixture::class);
+	}
 }
