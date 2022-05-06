@@ -182,7 +182,16 @@ export const counterSlice = createSlice({
       })
       .addCase(updateUserPermissions.fulfilled, state => {
         state.loading = false;
-      });
+      })
+      .addMatcher(
+        action => {
+          console.log({ action });
+          return action.type.endsWith('/fulfilled');
+        },
+        (state, action) => {
+          console.log({ action });
+        }
+      );
   }
 });
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\PlayerModelController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\TournamentController;
+use App\Http\Controllers\TournamentFixtureController;
 use App\Http\Controllers\UserController;
 use App\Models\Club;
 use App\Models\Fixture;
@@ -39,21 +40,22 @@ Route::get('/test', function () {
 	return Club::find(1)->fixtures;
 });
 
-Route::resource('permissions', PermissionController::class, ['except' => ['create', 'edit']]);
-Route::resource('roles', RoleController::class, ['except' => ['create', 'edit']]);
-Route::resource('users', UserController::class, ['except' => ['create', 'edit']]);
+Route::apiResource('permissions', PermissionController::class);
+Route::apiResource('roles', RoleController::class);
+Route::apiResource('users', UserController::class);
 
-Route::resource('clubs', ClubController::class, ['except' => ['create', 'edit', 'update', 'store']]);
+Route::apiResource('clubs', ClubController::class);
 Route::post('clubs/{club}', [ClubController::class, 'update']);
 Route::get('clubs/{club}/fixtures', [ClubController::class, 'index']);
 
-Route::resource('tournaments', TournamentController::class, ['except' => ['create', 'edit']]);
-Route::post('tournaments/{tournament}/updateclubs', [TournamentController::class, 'updateClubs']);
+Route::apiResource('tournaments', TournamentController::class);
+Route::post('tournaments/{tournament}/updateclubs', [TournamentController::class, 'updateClubs'])->name('tournaments.update.clubs');
+Route::get('tournaments/{tournament}/fixtures', [TournamentFixtureController::class, 'show'])->name('tournaments.fixtures');
 
-Route::resource('player-models', PlayerModelController::class, ['except' => ['create', 'edit']]);
+Route::apiResource('player-models', PlayerModelController::class);
 Route::post('player-models/{playerModel}', [PlayerModelController::class, 'updateAvatar']);
 
-Route::resource('fixtures', FixtureController::class, ['except' => ['create', 'edit']]);
+Route::apiResource('fixtures', FixtureController::class);
 
 
 Route::get('user/{user}/permission', [RolePermissionController::class, 'getAllPermissionsOfUser']);
