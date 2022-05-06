@@ -5,82 +5,58 @@ namespace App\Http\Controllers;
 use App\Models\Fixture;
 use App\Http\Requests\StoreFixtureRequest;
 use App\Http\Requests\UpdateFixtureRequest;
+use App\Http\Resources\FixtureResource;
+use App\Models\Tournament;
 
-class FixtureController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+class FixtureController extends Controller {
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+	use \App\traits\CreateFixtureTrait;
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreFixtureRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreFixtureRequest $request)
-    {
-        //
-    }
+	public function index() {
+		// return Fixture::all();
+		return FixtureResource::collection(Fixture::with('team1', 'team2', 'tournament')->get());
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Fixture  $fixture
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Fixture $fixture)
-    {
-        //
-    }
+		$tournament = Tournament::find(1);
+		$tournament_id = $tournament->id;
+		$tournament_leg = $tournament->leg;
+		$tournament_round = $tournament->round;
+		$clubIds = $tournament->clubs->map(function ($club) {
+			return $club['id'];
+		});
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Fixture  $fixture
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Fixture $fixture)
-    {
-        //
-    }
+		// return	$this->createRoundRobinFixtures($tournament_id, $clubIds, $tournament_leg);
+	}
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateFixtureRequest  $request
-     * @param  \App\Models\Fixture  $fixture
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateFixtureRequest $request, Fixture $fixture)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Fixture  $fixture
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Fixture $fixture)
-    {
-        //
-    }
+	public function create() {
+		//
+	}
+
+
+	public function store(StoreFixtureRequest $request) {
+		$tournament = Tournament::find(1);
+		$tournament_id = $tournament->id;
+		$tournament_leg = $tournament->leg;
+		$tournament_round = $tournament->round;
+	}
+
+
+	public function show(Fixture $fixture) {
+		return $fixture;
+	}
+
+
+	public function edit(Fixture $fixture) {
+		//
+	}
+
+
+	public function update(UpdateFixtureRequest $request, Fixture $fixture) {
+		//
+	}
+
+
+	public function destroy(Fixture $fixture) {
+		//
+	}
 }

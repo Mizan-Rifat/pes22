@@ -19,6 +19,6 @@ class Club extends Model {
 	}
 
 	public function fixtures() {
-		return $this->hasManyThrough(Fixture::class, Tournament::class,);
+		return $this->hasMany(Fixture::class, 'team1_id', 'id')->orWhere('team2_id', '=', $this->id);
 	}
 }

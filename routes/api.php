@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClubController;
+use App\Http\Controllers\FixtureController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PlayerModelController;
 use App\Http\Controllers\RoleController;
@@ -33,18 +34,26 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/test', function () {
-	return Club::with('fixtures')->get();
+	// return Club::with('fixtures')->get();
+	return Club::with('fixtures')->where('id', 1)->get();
+	return Club::find(1)->fixtures;
 });
 
 Route::resource('permissions', PermissionController::class, ['except' => ['create', 'edit']]);
 Route::resource('roles', RoleController::class, ['except' => ['create', 'edit']]);
 Route::resource('users', UserController::class, ['except' => ['create', 'edit']]);
+
 Route::resource('clubs', ClubController::class, ['except' => ['create', 'edit', 'update', 'store']]);
 Route::post('clubs/{club}', [ClubController::class, 'update']);
+Route::get('clubs/{club}/fixtures', [ClubController::class, 'index']);
+
 Route::resource('tournaments', TournamentController::class, ['except' => ['create', 'edit']]);
 Route::post('tournaments/{tournament}/updateclubs', [TournamentController::class, 'updateClubs']);
+
 Route::resource('player-models', PlayerModelController::class, ['except' => ['create', 'edit']]);
 Route::post('player-models/{playerModel}', [PlayerModelController::class, 'updateAvatar']);
+
+Route::resource('fixtures', FixtureController::class, ['except' => ['create', 'edit']]);
 
 
 Route::get('user/{user}/permission', [RolePermissionController::class, 'getAllPermissionsOfUser']);

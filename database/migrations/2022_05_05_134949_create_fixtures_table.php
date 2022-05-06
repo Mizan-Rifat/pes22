@@ -25,6 +25,7 @@ return new class extends Migration {
 			$table->unsignedInteger('team1_goals')->default(0);
 			$table->unsignedInteger('team2_goals')->default(0);
 			$table->unsignedInteger('winner_team_id')->nullable();
+			$table->string('status')->nullable();
 			$table->timestamps();
 		});
 	}
