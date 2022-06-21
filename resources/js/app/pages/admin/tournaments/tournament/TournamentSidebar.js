@@ -9,8 +9,6 @@ const TournamentSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log({ location });
-
   const [listItems] = useState([
     {
       label: 'Details',
@@ -35,6 +33,7 @@ const TournamentSidebar = () => {
       <List component="nav" aria-label="secondary mailbox folder" sx={{ p: 0 }}>
         {listItems.map(item => (
           <ListItemButton
+            key={item.link}
             selected={location.pathname.includes(`/${item.link}`)}
             onClick={() => navigate(item.link)}
             sx={{ p: 1.5 }}
